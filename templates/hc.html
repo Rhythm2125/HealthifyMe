@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>HealthConnect Dashboard</title>
+    <title>HealthConnect HealthAnalysis</title>
     <style>
         * {
             margin: 0;
@@ -334,7 +334,7 @@
             <li><a href="apb.html"><img src="styles/imgs/calendar.png">Appointments</a></li>
             <li><a href="#"><img src="styles/imgs/smart-watch.png">My Watch</a></li>
             <li><a href="profile.html"><img src="styles/imgs/user.png">Profile</a></li>
-            <li><a href="#"><img src="styles/imgs/settings.png">Settings</a></li>
+            <li><a href="st.html"><img src="styles/imgs/settings.png">Settings</a></li>
         </ul>
     </div>
     <main>
@@ -566,7 +566,7 @@
                 document.getElementById(tab.dataset.target).classList.add('active');
             });
         });
-        
+
         function markAsCompleted(id) {
             const card = document.getElementById(id);
             if (!card.classList.contains('completed')) {

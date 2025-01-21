@@ -7,7 +7,7 @@
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
-    <title>HealthConnect AboutUs</title>
+    <title>HealthConnect Settings</title>
     <style>
         * {
             margin: 0;
@@ -135,9 +135,9 @@
             transition: margin-left 0.3s;
         }
 
-        .apb-header {
-            text-align: center;
-            padding: 70px;
+        .st-header {
+            text-align: left;
+            padding: 30px;
             margin-bottom: 0px;
         }
 
@@ -146,54 +146,100 @@
             color: #2564ec;
         }
 
-        .apb-header p {
-            font-size: 1.3rem;
-            color: #1e3a8a;
+        .settings {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 10px auto;
+            max-width: 1444px; 
+            padding: 20px;
+            background: #f0f9ff;
+            border-radius: 10px;
         }
 
-        .cards {
-            display: grid;
-            padding: 70px;
-            grid-template-columns: repeat(auto-fit, minmax(450px, 0.5fr));
-            gap: 40px;
-            margin-top: 0px;
-            text-align: center;
-        }
-
-        .cards :hover {
-            transform: scale(1.01);
-        }
-
-        .card {
+        .settings .setting {
+            flex: 1 1 calc(100% - 20px);
+            display: flex;
+            align-items: left;
+            padding: 15px;
             background: #fff;
-            padding: 50px;
-            border-radius: 30px; 
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-size: 1rem; 
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            font-size: 16px;
         }
 
-        .card img {
-            width: 55px;
-            height: 55px;
-            margin-bottom: 4%;
-        }
-
-        .card h3 {
+        .settings .setting i {
+            font-size: 18px;
             color: #1e3a8a;
-            font-size: 1.3rem;
-            margin-bottom: 15px; 
         }
 
-        .card p {
-            font-size: 1.1rem;
+        .settings .setting label {
+            font-size: 16px;
+            color: #333;
+            margin-left: 10px;
+            flex: 1; 
+            text-align: left; 
         }
 
-        h2 {
-            font-size: 1.5rem;
-            color: #1e3a8a;
-            margin-left: 60px;
+        .settings .setting input[type="checkbox"],
+        .settings .setting input[type="text"] {
+            width: 40px;
+            height: 20px;
+            border: none;
+            border-radius: 20px;
+            padding: 5px;
+            text-align: center;
+            -webkit-appearance: none;
+            appearance: none;
+            outline: none;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
         }
-        
+
+        .settings .setting input[type="checkbox"] {
+            background-color: #ddd;
+            position: relative;
+        }
+
+        .settings .setting input[type="checkbox"]:checked {
+            background-color: #007BFF;
+        }
+
+        .settings .setting input[type="checkbox"]::before {
+            content: '';
+            position: absolute;
+            width: 18px;
+            height: 18px;
+            background-color: #fff;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+            transition: transform 0.3s ease;
+        }
+
+        .settings .setting input[type="checkbox"]:checked::before {
+            transform: translateX(20px);
+        }
+
+        .settings .setting input[type="text"] {
+            background-color: #f9f9f9;
+            padding: 20px 5px;
+            font-size: 14px;
+            text-align: left;
+            color: #555;
+            width: 150px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        input:checked + .slider {
+            background-color: #4CAF50;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(14px);
+        }
+
         footer {
             display: flex;
             justify-content: space-between;
@@ -238,35 +284,6 @@
             padding: 0.3rem;
             font-size: 0.9rem;
         }
-
-        @media (max-width: 768px) {
-            .cards {
-                padding: 20px;
-                grid-template-columns: 1fr; /* Single-column layout */
-            }
-
-            .side-nav ul li {
-                font-size: 0.9rem;
-            }
-
-            .settings {
-                grid-template-columns: 1fr; /* Single-column layout */
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .cards {
-                padding: 10px;
-            }
-
-            .card {
-                padding: 20px;
-            }
-
-            .settings .setting label {
-                font-size: 14px;
-            }
-        }
     </style>
 </head>
 <body>
@@ -291,56 +308,56 @@
         </ul>
     </div>
     <main>
-    <div class="apb-header">
-        <h1>About HealthConnect</h1>
-        <br>
-        <p>HealthConnect is a comprehensive healthcare management system designed to <br>
-            streamline patient care and hospital management. Our mission is to empower <br>
-            individuals to take control of their health journey while providing healthcare <br>
-            providers with the tools they need to deliver exceptional care.</p>
+    <div class="st-header">
+        <h1>Settings</h1>
+        <div class="settings">
+            <div class="setting">
+                <i class="fa-regular fa-bell"></i>
+                <label for="notifications">Enable Notifications</label>
+                <input type="checkbox" id="notifications">
+            </div>
+            <div class="setting">
+                <i class="fa-regular fa-moon"></i>
+                <label for="dark-mode">Dark Mode</label>
+                <input type="checkbox" id="dark-mode">
+            </div>
+            <div class="setting">
+                <i class="fa-solid fa-lock"></i>
+                <label for="two-factor">Two-Factor Authentication</label>
+                <input type="checkbox" id="two-factor">
+            </div>
+            <div class="setting">
+                <i class="fa-solid fa-arrow-up-from-bracket"></i>
+                <label for="data-sharing">Data Sharing</label>
+                <input type="checkbox" id="data-sharing">
+            </div>
+            <div class="setting">
+                <i class="fa-regular fa-envelope"></i>
+                <label for="sms">SMS Notifications</label>
+                <input type="checkbox" id="sms">
+            </div>
+        </div>
     </div>
-    <div class="cards">
-        <div class="card">
-            <img src="styles/imgs/heart.png">
-            <h3>Our Mission</h3>
-            <p>To revolutionize healthcare management by providing an intuitive, secure, and comprehensive platform that connects patients with their healthcare providers.</p>
+      </main>
+      <footer>
+        <div class="left">
+          <p>© 2023 HealthConnect. All rights reserved.</p>
         </div>
-        <div class="card">
-            <img src="styles/imgs/shield.png">
-            <h3>Data Security</h3>
-            <p>We prioritize the security and privacy of your health information, employing state-of-the-art encryption and following all relevant data protection regulations.</p>
+        <div class="right">
+            <div class="language-select">
+                <label for="language">Language: </label>
+                <select id="language">
+                  <option value="en">English</option>
+                </select>
+            </div>
+            <a href="au.html">About Us</a>
+            <a href="#">Meet Our Team</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
         </div>
-        <div class="card">
-            <img src="styles/imgs/flash.png">
-            <h3>Innovative Features</h3>
-            <p>From appointment scheduling to health record management, we're constantly innovating to bring you the best healthcare management experience possible.</p>
-        </div>
-        <div class="card">
-            <img src="styles/imgs/increase.png">
-            <h3>Future Plans</h3>
-            <p>We're working on integrating AI-powered health insights, telemedicine capabilities, and expanded interoperability with various healthcare systems.</p>
-        </div>
-    </div>
-  </main>
-  <footer>
-    <div class="left">
-      <p>© 2023 HealthConnect. All rights reserved.</p>
-    </div>
-    <div class="right">
-        <div class="language-select">
-            <label for="language">Language: </label>
-            <select id="language">
-              <option value="en">English</option>
-            </select>
-        </div>
-        <a href="au.html">About Us</a>
-        <a href="#">Meet Our Team</a>
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
-    </div>
-  </footer>
-  <script>
-    const sideNav = document.getElementById('sideNav');
+      </footer>
+    <script>
+        const sideNav = document.getElementById('sideNav');
         const openNav = document.getElementById('openNav');
         const closeNav = document.getElementById('closeNav');
         const mainContent = document.getElementById('mainContent');
@@ -360,6 +377,4 @@
         sideNav.classList.remove('open');
         mainContent.classList.remove('shifted');
     });
-  </script>
-</body>
-</html>
+    </script>

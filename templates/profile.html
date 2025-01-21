@@ -390,7 +390,7 @@
             <li><a href="apb.html"><img src="styles/imgs/calendar.png">Appointments</a></li>
             <li><a href="#"><img src="styles/imgs/smart-watch.png">My Watch</a></li>
             <li><a href="profile.html"><img src="styles/imgs/user.png">Profile</a></li>
-            <li><a href="#"><img src="styles/imgs/settings.png">Settings</a></li>
+            <li><a href="st.html"><img src="styles/imgs/settings.png">Settings</a></li>
         </ul>
     </div>
     <main>
@@ -408,16 +408,16 @@
                     <p><i class="fa-regular fa-calendar"></i> <strong>Date of Birth:</strong> <span id="profiledob"></span></p>
                     <a href="#" id="editButton" class="edit-btn"><i class="fa-regular fa-pen-to-square"></i>Edit Profile</a>
                 </div>
-                
+
                 <form id="editMode" style="display: none;">
                     <p><i class="fa-regular fa-user"></i> <strong>Name:</strong>
-                        <input type="text" id="nameInput" value=""></p>
+                        <input type="text" id="nameInput" value=" "></p>
                     <p><i class="fa-regular fa-envelope"></i> <strong>Email:</strong>
-                        <input type="email" id="emailInput" value=""></p>
+                        <input type="email" id="emailInput" value=" "></p>
                     <p><i class="fa-solid fa-phone"></i> <strong>Phone:</strong>
-                        <input type="text" id="phoneInput" value=""></p>
+                        <input type="text" id="phoneInput" value=" "></p>
                     <p><i class="fa-regular fa-calendar"></i> <strong>Date of Birth:</strong>
-                        <input type="date" id="dobInput" value=""></p>
+                        <input type="date" id="dobInput" value=" "></p>
                     <button type="button" id="saveButton" class="edit-btn"><i class="fa-regular fa-floppy-disk"></i>Save</button>
                     <button type="button" id="cancelButton" class="edit-btn" style="background-color: #555;"><i class="fa-solid fa-xmark"></i>Cancel</button>
                 </form>
@@ -519,7 +519,7 @@
               <option value="en">English</option>
             </select>
         </div>
-        <a href="#">About Us</a>
+        <a href="au.html">About Us</a>
         <a href="#">Meet Our Team</a>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
@@ -632,6 +632,36 @@
               button.disabled = true;
           }
       }
+
+      document.getElementById('editButton').addEventListener('click', () => {
+        document.getElementById('viewMode').style.display = 'none';
+        document.getElementById('editMode').style.display = 'block';
+
+        // Fill inputs with current values
+        document.getElementById('nameInput').value = document.getElementById('profileName').textContent.trim();
+        document.getElementById('emailInput').value = document.getElementById('profileEmail').textContent.trim();
+        document.getElementById('phoneInput').value = document.getElementById('profilephone').textContent.trim();
+        document.getElementById('dobInput').value = document.getElementById('profiledob').textContent.trim();
+    });
+
+    // Cancel editing
+    document.getElementById('cancelButton').addEventListener('click', () => {
+        document.getElementById('editMode').style.display = 'none';
+        document.getElementById('viewMode').style.display = 'block';
+    });
+
+    // Save changes
+    document.getElementById('saveButton').addEventListener('click', () => {
+        // Save updated values
+        document.getElementById('profileName').textContent = document.getElementById('nameInput').value;
+        document.getElementById('profileEmail').textContent = document.getElementById('emailInput').value;
+        document.getElementById('profilephone').textContent = document.getElementById('phoneInput').value;
+        document.getElementById('profiledob').textContent = document.getElementById('dobInput').value;
+
+        // Switch back to view mode
+        document.getElementById('editMode').style.display = 'none';
+        document.getElementById('viewMode').style.display = 'block';
+    });
 </script>
 </body>
 </html>

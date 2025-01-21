@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
-    <title>HealthConnect Dashboard</title>
+    <title>HealthConnect Appointment</title>
     <style>
         * {
             margin: 0;
@@ -245,6 +245,47 @@
             background-color: #1e3a8a;
         }
 
+        .main-container {
+            max-width: 1555px;
+            display: flex;
+            flex-direction: absolute;
+            gap: 20px;
+        }
+
+        .records-section, .add-record-section {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            width: 100%;
+        }
+
+        .records-section h3, .add-record-section h3 {
+            color: #1e3a8a;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+
+        .add-record-section table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        .add-record-section table thead {
+            background-color: #e0ecfc;
+        }
+
+        .add-record-section table th, table td {
+            text-align: left;
+            padding: 10px;
+            color: #0056b3;
+        }
+
+        .add-record-section table th {
+            font-weight: bold;
+        }
+
         footer {
             display: flex;
             justify-content: space-between;
@@ -342,7 +383,7 @@
             <li><a href="apb.html"><img src="styles/imgs/calendar.png">Appointments</a></li>
             <li><a href="#"><img src="styles/imgs/smart-watch.png">My Watch</a></li>
             <li><a href="profile.html"><img src="styles/imgs/user.png">Profile</a></li>
-            <li><a href="#"><img src="styles/imgs/settings.png">Settings</a></li>
+            <li><a href="st.html"><img src="styles/imgs/settings.png">Settings</a></li>
         </ul>
     </div>
     <main>
@@ -444,6 +485,25 @@
         <div class="bookappointment"
         <button id="bookappointment">Book Appointment</button>
     </div>
+    <div class="main-container">
+        <div class="add-record-section" id="appointmentsTable">
+            <h3>Scheduled Appointments</h3>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Hospital</th>
+                        <th>Doctor's Name</th>
+                        <th>type</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
   </main>
   <footer>
     <div class="left">
@@ -456,7 +516,7 @@
               <option value="en">English</option>
             </select>
         </div>
-        <a href="#">About Us</a>
+        <a href="au.html">About Us</a>
         <a href="#">Meet Our Team</a>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
