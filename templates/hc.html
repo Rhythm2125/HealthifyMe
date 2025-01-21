@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>HealthConnect Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f0f9ff;
+        }
+
+        .navbar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            margin-left: 20px;
+            font-weight: bold;
+            color: #1e88e5;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+
+        .side-nav {
+            width: 230px;
+            background-color: #ffffff;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 68px);
+            position: fixed;
+            top: 73px;
+            left: 0;
+            transform: translateX(-250px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .side-nav.open {
+            transform: translateX(0);
+        }
+
+        .side-nav button {
+            background: none;
+            border: none;
+            color: #000000;
+            font-size: 1.5rem;
+            margin: 10px;
+            align-self: flex-end;
+            cursor: pointer;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .side-nav ul li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .side-nav ul li a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .side-nav ul li a img {
+            height: 20px;
+            width: 20px;
+            margin-right: 5px;
+        }
+
+        .side-nav ul li a:hover {
+            transform: scale(1.05);
+            color: #1e88e5;
+        }
+
+        .open-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+        }
+
+        .open-btn:focus {
+            outline: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .main-container {
+            margin-left: 4%;
+            transition: margin-left 0.3s;
+        }
+
+        .hs-header {
+            margin: 20px;
+            text-align: left;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2564ec;
+        }
+
+        .mwh-header {
+            margin: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2564ec;
+        }
+
+        .tabs {
+            display: flex;
+            justify-content: center;
+            margin: 10px;
+        }
+
+        .tab {
+            flex: 1;
+            text-align: center;
+            padding: 15px 20px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            color: #ffffff;
+            background-color: #1e88e5;
+            transition: all 0.3s ease;
+            border-top-left-radius: 15px;
+            border-top-right-radius: 15px;
+            margin: 0 5px;
+        }
+
+        .tab:hover {
+            background-color: #1e3a8a;
+            color: #fff;
+        }
+
+        .tab.active {
+            background-color: #1e3a8a;
+            color: #fff;
+        }
+
+        .content {
+            max-width: 1450px;
+            margin: 0 auto;
+            padding: 5px;
+            border-radius: 10px;
+            display: none;
+        }
+
+        .content.active {
+            display: block;
+        }
+
+        .mwh-grid {
+            display: grid;
+            grid-template-columns: repeat(4, minmax(100px, 2fr));
+            text-align: center;
+            gap: 10px;
+        }
+
+        .mwh-card {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            position: relative;
+            min-height: 200px;
+        }
+
+        .mwh-card h3 {
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-top: 15px;
+        }
+
+        .mwh-card p {
+            color: #555555;
+            margin-top: 10px;
+            margin-left: 20px;
+            margin-right: 20px;
+        }
+
+        .mwh-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            align-self: flex-end;
+        }
+
+        .mwh-card button:hover {
+            background-color: #0056b3;
+        }
+
+        .achievements-section {
+            margin: 3px;
+            padding: 20px;
+            background: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            flex: 1;
+        }
+
+        .achievements-section h2 {
+            color: #1e3a8a;
+            font-size: 1.4rem;
+            margin-bottom: 20px;
+        }
+
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(100px, 1fr));
+            gap: 10px;
+        }
+
+        .achievement-card {
+            background-color: #f3f4f6;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: left;
+            position: relative;
+            min-height: 130px;
+        }
+
+        .achievement-card h3 {
+            color: #1e3a8a;
+            font-size: 1.1rem;
+            margin-top: 15px;
+            margin-left: 10px;
+        }
+
+        .achievement-card p {
+            color: #555555;
+            margin-top: 10px;
+            margin-left: 18px;
+        }
+
+        .achievement-card.completed {
+            background-color: #d4edda;
+            color: #155724;
+        }
+
+        .achievement-card button {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 8px 12px;
+            cursor: pointer;
+            margin-top: 10px;
+            margin-left: 18px;
+        }
+
+        .achievement-card button:hover {
+            background-color: #0056b3;
+        }
+
+        .achievement-card.completed button {
+            background-color: #28a745;
+            cursor: default;
+        }
+
+        .achievement-card.completed button:hover {
+            background-color: #28a745;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
+        <div class="logo">
+            <img src="styles/imgs/logo.png">
+            <span>HealthConnect</span>
+        </div>
+    </header>
+    <div class="side-nav" id="sideNav">
+        <button id="closeNav">&times;</button>
+        <ul>
+            <li><a href="db.html"><img src="styles/imgs/home.png">Dashboard</a></li>
+            <li><a href="nh.html"><img src="styles/imgs/location.png">Nearby Hospitals & Medical Shops</a></li>
+            <li><a href="hc.html"><img src="styles/imgs/healthcare.png">Health Analysis</a></li>
+            <li><a href="rec.html"><img src="styles/imgs/health-check.png">Records</a></li>
+            <li><a href="apb.html"><img src="styles/imgs/calendar.png">Appointments</a></li>
+            <li><a href="#"><img src="styles/imgs/smart-watch.png">My Watch</a></li>
+            <li><a href="profile.html"><img src="styles/imgs/user.png">Profile</a></li>
+            <li><a href="#"><img src="styles/imgs/settings.png">Settings</a></li>
+        </ul>
+    </div>
+    <main>
+    <div class="tabs">
+        <div class="tab active" data-target="health-score">Check Your Health Score</div>
+        <div class="tab" data-target="mind-games">Mental Wellness Hub</div>
+        <div class="tab" data-target="exercises">Daily Exercises</div>
+    </div>
+    <div id="health-score" class="content active">
+        <div class="hs-header">
+            <h1>Your Health Score</h1>
+        </div>
+    </div>
+    <div id="mind-games" class="content">
+        <div class="mwh-header">
+            <h1>🎮 Fun Mental Wellness Hub</h1>
+        </div>
+        <div class="mwh-grid">
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🎯</span>
+                <h3>Memory Match</h3>
+                <p>Train your brain with this fun matching game</p>
+                <button href="">Start</button>
+            </div>  
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🫧</span>
+                <h3>Bubble Pop</h3>
+                <p>Pop virtual bubble wrap for instant stress relief</p>
+                <button href="">Start</button>
+            </div>
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">📝</span>
+                <h3>Word Unscramble</h3>
+                <p>Test your vocabulary with scrambled positive words</p>
+                <button href="">Start</button>
+            </div>
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🎨</span>
+                <h3>Color Match</h3>
+                <p>Match colors to improve focus and concentration</p>
+                <button href="">Start</button>
+            </div>
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🧮</span>
+                <h3>Math Challenge</h3>
+                <p>Solve quick math problems to boost your numeracy</p>
+                <button href="">Start</button>
+            </div>
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🔍</span>
+                <h3>Pattern Recognition</h3>
+                <p>Identify patterns to enhance your cognitive skills</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">⚡</span>
+                <h3>Reaction Time</h3>
+                <p>Test and improve your reaction speed</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🔊</span>
+                <h3>Simon Says</h3>
+                <p>Follow the sequence to boost your memory</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🔢</span>
+                <h3>Sudoku</h3>
+                <p>Classic number puzzle to challenge your logic</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🧩</span>
+                <h3>Jigsaw Puzzle</h3>
+                <p>Piece together images to improve spatial reasoning</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🔤</span>
+                <h3>Anagrams</h3>
+                <p>Form words from jumbled letters</p>
+                <button href="">Start</button>
+            </div>   
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">👁️</span>
+                <h3>Spot the Difference</h3>
+                <p>Find differences between two similar images</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">❓</span>
+                <h3>Trivia Quiz</h3>
+                <p>Test your knowledge on various topics</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🌀</span>
+                <h3>Maze Runner</h3>
+                <p>Navigate through increasingly complex mazes</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🔢</span>
+                <h3>Memory Sequence</h3>
+                <p>Remember and repeat growing number sequences</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🧠</span>
+                <h3>Riddles</h3>
+                <p>Solve mind-bending riddles</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">👅</span>
+                <h3>Tongue Twisters</h3>
+                <p>Practice pronunciation with fun phrases</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🧘</span>
+                <h3>Guided Meditation</h3>
+                <p>Relax and focus with guided meditation</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">🌬️</span>
+                <h3>Breathing Exercise</h3>
+                <p>Learn and practice calming breathing techniques</p>
+                <button href="">Start</button>
+            </div> 
+            <div class="mwh-card" id="mwh1">
+                <span style="font-size: 3rem; margin-top: 10px;">💖</span>
+                <h3>Positive Affirmations</h3>
+                <p>Boost your mood with positive self-talk</p>
+                <button href="">Start</button>
+            </div> 
+        </div>
+    </div>
+    <div id="exercises" class="content">
+        <div class="mwh-header">
+            <h1>Complete your Daily Exercises</h1>
+        </div>
+        <div class="achievement-grid">
+            <div class="achievement-card" id="achievement6">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-brain" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #16b8a6"></i>
+                    <h3>Meditation Challenge</h3>
+                </div>
+                <p>Complete a 5-minute guided meditation</p>
+                <button onclick="markAsCompleted('achievement6')">Complete</button>
+            </div>
+            <div class="achievement-card" id="achievement9">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-person-walking" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #ef5050"></i>
+                    <h3>10,000 Steps</h3>
+                </div>
+                <p>Walk 10,000 Steps in a Day</p>
+                <button onclick="markAsCompleted('achievement9')">Complete</button>
+            </div>
+            <div class="achievement-card" id="achievement10">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-dumbbell" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #ec5ea4"></i>
+                    <h3>Yoga Session</h3>
+                </div>
+                <p>Complete a 15-minutes yoga routine</p>
+                <button onclick="markAsCompleted('achievement10')">Complete</button>
+            </div>
+            <div class="achievement-card" id="achievement11">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-dumbbell" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #f8771e"></i>
+                    <h3>Surya Namaskar</h3>
+                </div>
+                <p>Complete 10 rounds of Sun Salutation</p>
+                <button onclick="markAsCompleted('achievement11')">Complete</button>
+            </div>
+            <div class="achievement-card" id="achievement12">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-brain" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #a856f7"></i>
+                    <h3>Meditation</h3>
+                </div>
+                <p>Practice Mindfulness for 10 minutes</p>
+                <button onclick="markAsCompleted('achievement12')">Complete</button>
+            </div>
+            <div class="achievement-card" id="achievement13">
+                <div style="display: flex; align-items: center;">
+                    <i class="fa-solid fa-dumbbell" style="font-size: 1.1rem; margin-top: 12px; margin-left: 20px; color: #4bce7b"></i>
+                    <h3>Tadasana</h3>
+                </div>
+                <p>Mountain Pose for 1 minute</p>
+                <button onclick="markAsCompleted('achievement13')">Complete</button>
+            </div>
+        </div>
+    </main>
+    <script>
+        const sideNav = document.getElementById('sideNav');
+        const openNav = document.getElementById('openNav');
+        const closeNav = document.getElementById('closeNav');
+        const mainContent = document.getElementById('mainContent');
+
+        openNav.addEventListener('click', () => {
+            const isOpen = sideNav.classList.contains('open');
+            if (isOpen) {
+                sideNav.classList.remove('open');
+                mainContent.classList.remove('shifted');
+            } else {
+                sideNav.classList.add('open');
+                mainContent.classList.add('shifted');
+            }
+        });
+
+        closeNav.addEventListener('click', () => {
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('shifted');
+        });
+        
+        const tabs = document.querySelectorAll('.tab');
+        const contents = document.querySelectorAll('.content');
+
+        tabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                tabs.forEach(t => t.classList.remove('active'));
+                contents.forEach(c => c.classList.remove('active'));
+
+                // Add active class to the clicked tab and corresponding content
+                tab.classList.add('active');
+                document.getElementById(tab.dataset.target).classList.add('active');
+            });
+        });
+        
+        function markAsCompleted(id) {
+            const card = document.getElementById(id);
+            if (!card.classList.contains('completed')) {
+                card.classList.add('completed');
+                const button = card.querySelector('button');
+                button.textContent = 'Completed';
+                button.disabled = true;
+            }
+        }
+    </script>
+</body>
+</html>

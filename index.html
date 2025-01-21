@@ -1,0 +1,684 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <title>HealthConnect</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      color: #333;
+      background-color: #f0f9ff;
+    }
+    .navbar {
+        display: flex;
+        align-items: center;
+        background-color: #fff;
+        padding: 1rem 2rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 100;
+    }
+    .navbar .logo {
+        font-size: 1.5rem;
+        margin-left: 20px;
+        font-weight: bold;
+        color: #1e88e5;
+        display: flex;
+        align-items: center;
+    }
+    .navbar .logo img {
+        width: 40px;
+        height: 40px;
+        margin-right: 0.5rem;
+    }
+    .side-nav {
+        width: 230px;
+        background-color: #ffffff;
+        color: #fff;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        height: calc(100vh - 68px);
+        position: fixed;
+        top: 73px;
+        left: 0;
+        transform: translateX(-250px);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        z-index: 1000;
+    }
+    .side-nav.open {
+        transform: translateX(0);
+    }
+    .side-nav button {
+        background: none;
+        border: none;
+        color: #000000;
+        font-size: 1.5rem;
+        margin: 10px;
+        align-self: flex-end;
+        cursor: pointer;
+    }
+    .side-nav ul {
+        list-style: none;
+        padding: 1rem;
+        display: flex;
+        flex-direction: column;
+        gap: 1.2rem;
+    }
+    .side-nav ul li {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+    .side-nav ul li a {
+        text-decoration: none;
+        color: #000000;
+        font-size: 1.1rem;
+        display: flex;
+        align-items: center;
+    }
+    .side-nav ul li a img {
+        height: 20px;
+        width: 20px;
+        margin-right: 5px;
+    }
+    .side-nav ul li a:hover {
+        transform: scale(1.05);
+        color: #1e88e5;
+    }
+    .open-btn {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #333;
+        background: none;
+        border: none;
+    }
+    .open-btn:focus {
+        outline: none;
+    }
+    .close-btn {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: #333;
+    }
+    .main-container {
+        margin-left: 4%;
+        transition: margin-left 0.3s;
+    }
+    .hero-section {
+      text-align: center;
+      padding: 9rem 2rem;
+      background: #f0f9ff;
+      position: relative;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      opacity: 0.1;
+      z-index: -1;
+    }
+
+    .hero-section h1 {
+      font-size: 4rem;
+      color: #2564ec;
+    }
+
+    .hero-section p {
+      margin: 1rem;
+      color: #2564ec;
+      font-size: 1.2rem;
+    }
+
+    .features {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 3rem;
+      flex-wrap: wrap;
+    }
+
+    .feature {
+      background: #fff;
+      color: #333;
+      padding: 2rem;
+      border-radius: 8px;
+      width: 450px; 
+      text-align: center;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease; /* Added animation */
+    }
+
+    .feature:hover {
+      transform: translateY(-10px); 
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+    }
+
+    .feature img {
+      width: 40px;
+      height: 40px;
+    }
+
+    .feature h3 {
+      margin-top: 1rem;
+      font-size: 1.2rem;
+    }
+
+    .feature p {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    .cta-buttons {
+      margin-top: 2rem;
+    }
+
+    .primary-btn {
+      background-color: #1e88e5;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+
+    .secondary-btn {
+      background-color: #f1f1f1;
+      color: #333;
+      padding: 0.8rem 1.5rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin-left: 1rem;
+      font-size: 1rem;
+    }
+
+    .primary-btn:hover {
+      background-color: #1565c0;
+    }
+
+    .secondary-btn:hover {
+      background-color: #ddd;
+    }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background-color: #fff;
+      margin-top: 3rem;
+      box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+      font-size: 0.9rem;
+      color: #555;
+    }
+
+    footer .left {
+      display: flex;
+      align-items: center;
+    }
+
+    footer .left p {
+      margin: 0;
+    }
+
+    footer .right {
+      display: flex;
+      align-items: center;
+    }
+
+    footer a {
+      color: #1e88e5;
+      margin: 0 0.5rem;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+
+    .language-select {
+      margin-left: 1rem;
+    }
+
+    .language-select select {
+      padding: 0.3rem;
+      font-size: 0.9rem;
+    }
+
+    .modal {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+
+    .modal-content {
+      background: #fff;
+      border-radius: 20px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      overflow: hidden;
+      max-width: 350px;
+      width: 100%;
+    }
+
+    .header {
+      padding: 20px;
+      text-align: center;
+    }
+
+    .header h2 {
+      color: #2564ec;
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .header p {
+      color: #000000;
+    }
+
+    .form {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form input {
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      padding: 10px;
+      margin: 10px 0;
+      font-size: 14px;
+      width: 100%;
+    }
+
+    .form button {
+      padding: 10px;
+      margin: 10px 0;
+      border: none;
+      border-radius: 10px;
+      background-color: #1565c0;
+      color: #fff;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .form button:hover {
+      background-color: #1e3a8a;
+    }
+
+    .text-center {
+      text-align: center;
+      font-size: 14px;
+    }
+
+    .text-center a {
+      text-decoration: none;
+      color: #1e3a8a;
+      font-weight: bold;
+    }
+
+    .text-center a:hover {
+      text-decoration: underline;
+    }
+
+    .alternate {
+      text-align: center;
+      font-size: 14px;
+      margin: 10px 0;
+      color: #777;
+    }
+
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 1rem;
+      font-weight: bold;
+      color: #333;
+      cursor: pointer;
+      position: absolute;
+      top: 140px;
+      right: 600px;
+  }
+
+  .close-button:hover {
+    color: #1e88e5;
+  }
+
+  @media (max-width: 768px) {
+    .navbar {
+      padding: 1rem;
+    }
+    
+    .side-nav {
+      width: 200px;
+    }
+
+    .hero-section {
+      padding: 6rem 1rem;
+    }
+
+    .hero-section h1 {
+      font-size: 2.5rem;
+    }
+
+    .hero-section p {
+      font-size: 1rem;
+    }
+
+    .features {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .feature {
+      width: 100%; /* Full width for smaller screens */
+    }
+    .close-button {
+      top: 10px;  /* Reduce the distance from the top */
+      right: 10px; /* Adjust distance from the right */
+      font-size: 1rem; /* Reduce font size */
+    }
+  }
+
+  @media (max-width: 480px) {
+    .navbar .logo span {
+      font-size: 1.2rem;
+    }
+
+    .side-nav ul li a {
+      font-size: 1rem;
+    }
+
+    .cta-buttons {
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .primary-btn, .secondary-btn {
+      width: 100%; /* Full width buttons on small screens */
+      text-align: center;
+    }
+
+    .modal-content {
+      max-width: 90%; /* Adjust modal width for smaller screens */
+    }
+
+    .form input, .form button {
+      font-size: 1rem; /* Adjust input and button sizes */
+    }
+    .close-button {
+      top: 5px;
+      right: 5px;
+      font-size: 0.9rem; /* Further reduce font size for very small screens */
+    }
+  }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
+    <div class="logo">
+        <img src="templates/styles/imgs/logo.png">
+        <span>HealthConnect</span>
+    </div>
+</header>
+<div class="side-nav" id="sideNav">
+    <button id="closeNav">&times;</button>
+    <ul>
+        <li><a href="templates/db.html"><img src="templates/styles/imgs/home.png">Dashboard</a></li>
+        <li><a href="templates/nh.html"><img src="templates/styles/imgs/location.png">Nearby Hospitals & Medical Shops</a></li>
+        <li><a href="templates/hc.html"><img src="templates/styles/imgs/healthcare.png">Health Analysis</a></li>
+        <li><a href="templates/rec.html"><img src="templates/styles/imgs/health-check.png">Records</a></li>
+        <li><a href="templates/apb.html"><img src="templates/styles/imgs/calendar.png">Appointments</a></li>
+        <li><a href="#"><img src="templates/styles/imgs/smart-watch.png">My Watch</a></li>
+        <li><a href="templates/profile.html"><img src="templates/styles/imgs/user.png">Profile</a></li>
+        <li><a href="#"><img src="templates/styles/imgs/settings.png">Settings</a></li>
+    </ul>
+</div>
+  <main class="hero-section">
+    <h1>Welcome to HealthConnect</h1>
+    <p>Your comprehensive healthcare management system. Streamline <br>
+        patient care and hospital management with our integrated features.</p>
+    <div class="features">
+      <div class="feature">
+        <img src="templates/styles/imgs/heart.png" alt="Personalized Care">
+        <h3>Personalized Care</h3>
+        <p>Get tailored health recommendations and track your progress over time.</p>
+      </div>
+      <div class="feature">
+        <img src="templates/styles/imgs/shield.png" alt="Secure & Private">
+        <h3>Secure & Private</h3>
+        <p>Your health data is protected with state-of-the-art encryption and security measures.</p>
+      </div>
+      <div class="feature">
+        <img src="templates/styles/imgs/flash.png" alt="Instant Access">
+        <h3>Instant Access</h3>
+        <p>Access your health records, book appointments, and find nearby hospitals instantly.</p>
+      </div>
+    </div>
+    <div class="cta-buttons">
+      <button onclick="window.location.href='templates/db.html'" class="primary-btn">Get Started</button>
+      <button onclick="window.location.href='templates/au.html'" class="secondary-btn">Learn More</button>
+    </div>
+  </main>
+  <footer>
+    <div class="left">
+      <p>© 2023 HealthConnect. All rights reserved.</p>
+    </div>
+    <div class="right">
+        <div class="language-select">
+            <label for="language">Language: </label>
+            <select id="language">
+              <option value="en">English</option>
+            </select>
+        </div>
+        <a href="#">About Us</a>
+        <a href="#">Meet Our Team</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+  </footer>
+  <div class="modal" id="authModal">
+    <div class="modal-content">
+      <div class="container" id="loginContainer">
+        <div class="header">
+          <h2>Welcome to HealthConnect</h2>
+          <button class="close-button" onclick="closeAuthModal()">✖</button>
+          <br>
+          <p>Please Enter your credentials to login</p>
+        </div>
+        <div class="form">
+          <input type="text" placeholder="Email Id" id="loginUsername">
+          <input type="password" placeholder="Password" id="loginPassword">
+          <button onclick="login()">Login</button>
+          <p class="text-center"><a href="#">Forgot password?</a></p>
+          <br>
+          <p class="text-center">Don’t have an account? <a href="#" onclick="showSignup()">Sign Up</a></p>
+          <p class="alternate">Or</p>
+          <div id="g_id_onload"
+            data-client_id="YOUR_GOOGLE_CLIENT_ID"
+            data-callback="handleGoogleSignIn"
+            data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin" data-type="standard"></div>
+        </div>
+      </div>
+
+      <div class="container" id="signupContainer" style="display: none;">
+        <div class="header">
+          <h2>Welcome to HealthConnect</h2>
+          <button class="close-button" onclick="closeAuthModal()">✖</button>
+          <br>
+          <p>Please create your account to continue</p>
+        </div>
+        <div class="form">
+          <input type="text" placeholder="Your Name" id="signupUsername">
+          <input type="email" placeholder="Email Id" id="signupEmail">
+          <input type="password" placeholder="Password" id="signupPassword">
+          <input type="password" placeholder="Confirm Password" id="signupConfirmPassword">
+          <button onclick="signup()">Sign Up</button>
+          <p class="alternate">Or</p>
+          <div id="g_id_onload"
+            data-client_id="YOUR_GOOGLE_CLIENT_ID"
+            data-callback="handleGoogleSignIn"
+            data-auto_prompt="false">
+          </div>
+          <div class="g_id_signin" data-type="standard"></div>
+          <br>
+          <p class="text-center">Already have an account? <a href="#" onclick="showLogin()">Login</a></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    const sideNav = document.getElementById('sideNav');
+        const openNav = document.getElementById('openNav');
+        const closeNav = document.getElementById('closeNav');
+        const mainContent = document.getElementById('mainContent');
+
+        openNav.addEventListener('click', () => {
+        const isOpen = sideNav.classList.contains('open');
+        if (isOpen) {
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('shifted');
+        } else {
+            sideNav.classList.add('open');
+            mainContent.classList.add('shifted');
+        }
+    });
+
+    closeNav.addEventListener('click', () => {
+        sideNav.classList.remove('open');
+        mainContent.classList.remove('shifted');
+    });
+
+    window.onload = function() {
+      // Automatically show the modal on page load
+      document.getElementById('authModal').style.display = 'flex';
+    };
+
+    function showSignup() {
+      document.getElementById('loginContainer').style.display = 'none';
+      document.getElementById('signupContainer').style.display = 'block';
+    }
+
+    function showLogin() {
+      document.getElementById('signupContainer').style.display = 'none';
+      document.getElementById('loginContainer').style.display = 'block';
+    }
+
+    async function login() {
+      const email = document.getElementById('loginUsername').value;
+      const password = document.getElementById('loginPassword').value;
+
+      if (email && password) {
+        const response = await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          // Save user data in localStorage
+          localStorage.setItem('user', JSON.stringify(data.user));
+          alert('Login successful!');
+          window.location.href = 'templates/profile.html'; // Redirect to profile
+        } else {
+          alert(data.message || 'Login failed.');
+        }
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+
+    async function signup() {
+      const name = document.getElementById('signupUsername').value;
+      const email = document.getElementById('signupEmail').value;
+      const password = document.getElementById('signupPassword').value;
+      const confirmPassword = document.getElementById('signupConfirmPassword').value;
+
+      if (name && email && password && confirmPassword) {
+        if (password === confirmPassword) {
+          const response = await fetch('/api/signup', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ name, email, password }),
+          });
+
+          const data = await response.json();
+
+          if (response.ok) {
+            // Save user data in localStorage
+            const userData = { name, email };
+            localStorage.setItem('user', JSON.stringify(userData));
+            alert('Sign up successful!');
+            window.location.href = 'templates/profile.html'; // Redirect to profile
+          } else {
+            alert(data.message || 'Sign up failed.');
+          }
+        } else {
+          alert('Passwords do not match.');
+        }
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+
+    function handleGoogleSignIn(response) {
+      const credential = response.credential;
+
+      // Send the credential to the backend for verification and saving user data
+      fetch('/api/google-signin', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ credential }),
+      })
+        .then((res) => res.json())
+        .then((data) => {
+          if (data.success) {
+            // Save user data in localStorage
+            localStorage.setItem('user', JSON.stringify(data.user));
+            alert('Google Sign-In successful!');
+            window.location.href = 'templates/profile.html'; // Redirect to profile
+          } else {
+            alert(data.message || 'Google Sign-In failed.');
+          }
+        })
+        .catch((error) => console.error('Error:', error));
+    }
+    function closeAuthModal() {
+      const authModal = document.getElementById('authModal');
+      authModal.style.display = 'none';
+    }
+  </script>
+</body>
+</html>

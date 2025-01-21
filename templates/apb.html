@@ -1,0 +1,488 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
+    <title>HealthConnect Dashboard</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            color: #333;
+            background-color: #f0f9ff;
+        }
+        .navbar {
+            display: flex;
+            align-items: center;
+            background-color: #fff;
+            padding: 1rem 2rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar .logo {
+            font-size: 1.5rem;
+            margin-left: 20px;
+            font-weight: bold;
+            color: #1e88e5;
+            display: flex;
+            align-items: center;
+        }
+
+        .navbar .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 0.5rem;
+        }
+
+        .side-nav {
+            width: 230px;
+            background-color: #ffffff;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            height: calc(100vh - 68px);
+            position: fixed;
+            top: 73px;
+            left: 0;
+            transform: translateX(-250px);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+        }
+
+        .side-nav.open {
+            transform: translateX(0);
+        }
+
+        .side-nav button {
+            background: none;
+            border: none;
+            color: #000000;
+            font-size: 1.5rem;
+            margin: 10px;
+            align-self: flex-end;
+            cursor: pointer;
+        }
+
+        .side-nav ul {
+            list-style: none;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+        }
+
+        .side-nav ul li {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .side-nav ul li a {
+            text-decoration: none;
+            color: #000000;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .side-nav ul li a img {
+            height: 20px;
+            width: 20px;
+            margin-right: 5px;
+        }
+
+        .side-nav ul li a:hover {
+            transform: scale(1.05);
+            color: #1e88e5;
+        }
+
+        .open-btn {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+            background: none;
+            border: none;
+        }
+
+        .open-btn:focus {
+            outline: none;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: #333;
+        }
+
+        .main-container {
+            margin-left: 4%;
+            transition: margin-left 0.3s;
+        }
+
+        .apb-header {
+            margin: 30px 2rem 0;
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #2564ec;
+        }
+
+        .container {
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .row {
+            display: flex;
+            gap: 20px;
+        }
+
+        .column {
+            flex: 1;
+        }
+
+        .card {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+
+        .card h2 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .time-slots {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 20px;
+        }
+
+        .time-slots button {
+            padding: 15px;
+            background-color: #505050;
+            color: #fff;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 0.95rem;
+        }
+
+        .time-slots button:hover {
+            background-color: #191919;
+        }
+
+        table {
+            width: 15%;
+        }
+
+        table th,
+        table td {
+            text-align: left;
+            padding: 10px;
+            font-size: 1rem;
+            cursor: pointer;
+        }
+
+        table td.selected {
+            background-color: #1e88e5;
+            color: #fff;
+            border-radius: 100%;
+        }
+
+        table td.inactive {
+            color: #bbb;
+        }
+
+        .select-hospital select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .select-hospital select {
+            width: 100%;
+            font-size: 1rem;
+            padding: 12px;
+        }
+
+        .bookappointment {
+            max-width: 160px; 
+            padding: 15px; 
+            background-color: #2564ec; 
+            color: #000000;
+            font-size: 15px; 
+            border: none; 
+            border-radius: 10px; 
+            margin-top: 10px; 
+            cursor: pointer;
+        }
+
+        .bookappointment:hover {
+            transform: scale(1.05);
+            background-color: #1e3a8a;
+        }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            margin-top: 3rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: #555;
+        }
+
+        footer .left {
+            display: flex;
+            align-items: center;
+        }
+
+        footer .left p {
+            margin: 0;
+        }
+
+        footer .right {
+            display: flex;
+            align-items: center;
+        }
+
+        footer a {
+            color: #1e88e5;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+
+        footer a:hover {
+            text-decoration: underline;
+        }
+
+        .language-select {
+            margin-left: 1rem;
+        }
+
+        .language-select select {
+            padding: 0.3rem;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 20px;
+            }
+
+            .row {
+                flex-direction: column;
+            }
+
+            .time-slots {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .container {
+                padding: 10px;
+            }
+
+            .card {
+                padding: 10px;
+            }
+
+            h1 {
+                font-size: 1.5rem;
+            }
+
+            .time-slots button {
+                font-size: 0.8rem;
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
+        <div class="logo">
+            <img src="styles/imgs/logo.png">
+            <span>HealthConnect</span>
+        </div>
+    </header>
+    <div class="side-nav" id="sideNav">
+        <button id="closeNav">&times;</button>
+        <ul>
+            <li><a href="db.html"><img src="styles/imgs/home.png">Dashboard</a></li>
+            <li><a href="nh.html"><img src="styles/imgs/location.png">Nearby Hospitals & Medical Shops</a></li>
+            <li><a href="hc.html"><img src="styles/imgs/healthcare.png">Health Analysis</a></li>
+            <li><a href="rec.html"><img src="styles/imgs/health-check.png">Records</a></li>
+            <li><a href="apb.html"><img src="styles/imgs/calendar.png">Appointments</a></li>
+            <li><a href="#"><img src="styles/imgs/smart-watch.png">My Watch</a></li>
+            <li><a href="profile.html"><img src="styles/imgs/user.png">Profile</a></li>
+            <li><a href="#"><img src="styles/imgs/settings.png">Settings</a></li>
+        </ul>
+    </div>
+    <main>
+    <div class="apb-header">
+        <h1>Schedule an Appointment</h1>
+    </div>
+    <div class="container">
+        <div class="row">
+            <div class="column">
+                <div class="card">
+                    <h2>Select a Date</h2>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Su</th>
+                                <th>Mo</th>
+                                <th>Tu</th>
+                                <th>We</th>
+                                <th>Th</th>
+                                <th>Fr</th>
+                                <th>Sa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="inactive">29</td>
+                                <td class="inactive">30</td>
+                                <td class="inactive">31</td>
+                                <td>1</td>
+                                <td>2</td>
+                                <td>3</td>
+                                <td>4</td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>6</td>
+                                <td>7</td>
+                                <td>8</td>
+                                <td>9</td>
+                                <td>10</td>
+                                <td class="selected">11</td>
+                            </tr>
+                            <tr>
+                                <td>12</td>
+                                <td>13</td>
+                                <td>14</td>
+                                <td>15</td>
+                                <td>16</td>
+                                <td>17</td>
+                                <td>18</td>
+                            </tr>
+                            <tr>
+                                <td>19</td>
+                                <td>20</td>
+                                <td>21</td>
+                                <td>22</td>
+                                <td>23</td>
+                                <td>24</td>
+                                <td>25</td>
+                            </tr>
+                            <tr>
+                                <td>26</td>
+                                <td>27</td>
+                                <td>28</td>
+                                <td>29</td>
+                                <td>30</td>
+                                <td>31</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="column">
+                <div class="card">
+                    <h2>Available Time Slots</h2>
+                    <div class="time-slots">
+                        <button>9:00 AM</button>
+                        <button>10:00 AM</button>
+                        <button>11:00 AM</button>
+                        <button>1:00 PM</button>
+                        <button>2:00 PM</button>
+                        <button>3:00 PM</button>
+                        <button>4:00 PM</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="select-hospital">
+            <div class="card">
+                <h2>Select a Hospital</h2>
+                <select>
+                    <option>Select a hospital</option>
+                    <option>Hospital A</option>
+                    <option>Hospital B</option>
+                    <option>Hospital C</option>
+                </select>
+            </div>
+        </div>
+        <div class="bookappointment"
+        <button id="bookappointment">Book Appointment</button>
+    </div>
+  </main>
+  <footer>
+    <div class="left">
+      <p>© 2023 HealthConnect. All rights reserved.</p>
+    </div>
+    <div class="right">
+        <div class="language-select">
+            <label for="language">Language: </label>
+            <select id="language">
+              <option value="en">English</option>
+            </select>
+        </div>
+        <a href="#">About Us</a>
+        <a href="#">Meet Our Team</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+    </div>
+  </footer>
+</body>
+</html>
+<script>
+    const sideNav = document.getElementById('sideNav');
+        const openNav = document.getElementById('openNav');
+        const closeNav = document.getElementById('closeNav');
+        const mainContent = document.getElementById('mainContent');
+
+        openNav.addEventListener('click', () => {
+        const isOpen = sideNav.classList.contains('open');
+        if (isOpen) {
+            sideNav.classList.remove('open');
+            mainContent.classList.remove('shifted');
+        } else {
+            sideNav.classList.add('open');
+            mainContent.classList.add('shifted');
+        }
+    });
+
+    closeNav.addEventListener('click', () => {
+        sideNav.classList.remove('open');
+        mainContent.classList.remove('shifted');
+    });
+</script>
