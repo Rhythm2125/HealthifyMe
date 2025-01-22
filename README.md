@@ -27,4 +27,6 @@ HealthConnect supports a user-friendly interface and accessible design to ensure
 ## 📧 Contact
 
 For any questions or feedback, feel free to reach out:
-**Email**: rhythmjain.2005@gmail.com, rishabhjain1175@gmail.com
+**Email**: 
+rhythmjain.2005@gmail.com
+rishabhjain1175@gmail.com
