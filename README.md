@@ -3,6 +3,8 @@
 
 **HealthConnect** is an innovative healthcare application designed to revolutionize healthcare management and disease prediction. The app offers an intuitive and interactive platform for users to monitor their health, predict diseases based on symptoms, and engage in fun, health-focused games.
 
+🌐 **Visit My Website**: [Health Connect](https://healthconnect-nine.vercel.app/)
+
 ## Features
 
 ### 1. **Disease Prediction**
@@ -19,23 +21,6 @@ Engaging mini-games are integrated into the app to promote physical activity and
 
 ### 5. **Enhanced Accessibility**
 HealthConnect supports a user-friendly interface and accessible design to ensure inclusivity and ease of use for individuals of all ages.
-
-## Application Link
-You can access the HealthConnect application by clicking the link below:
-
-## How to Use
-1. Download the app using the link provided.
-2. Register or log in to create a profile.
-3. Navigate through the app to:
-   - Report symptoms for disease prediction.
-   - Access medicine details.
-   - Scan and interpret medical documents.
-   - Play exercise-focused games.
-
-## Future Enhancements
-- Adding more games for diverse exercise options.
-- Expanding the database for symptom analysis and disease prediction.
-- Incorporating real-time doctor consultation and appointment scheduling.
 
 **This is in Developement Process**
 
