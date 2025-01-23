@@ -243,6 +243,46 @@
             background-color: #0056b3;
         }
 
+        .popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .popup-content {
+            background-color: #ffffff;
+            width: 80%;
+            max-width: 800px;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+
+        .popup-content .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 20px;
+            font-size: 1.5rem;
+            color: #333;
+            cursor: pointer;
+        }
+
+        .popup-content iframe {
+            width: 100%;
+            height: 500px;
+            border: none;
+            margin-top: 20px;
+        }
+
         .achievements-section {
             margin: 3px;
             padding: 20px;
@@ -357,122 +397,129 @@
                 <span style="font-size: 3rem; margin-top: 10px;">🎯</span>
                 <h3>Memory Match</h3>
                 <p>Train your brain with this fun matching game</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/mm.html">Start</button>
             </div>  
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🫧</span>
                 <h3>Bubble Pop</h3>
                 <p>Pop virtual bubble wrap for instant stress relief</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/bp.html">Start</button>
             </div>
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">📝</span>
                 <h3>Word Unscramble</h3>
                 <p>Test your vocabulary with scrambled positive words</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/wu.html">Start</button>
             </div>
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🎨</span>
                 <h3>Color Match</h3>
                 <p>Match colors to improve focus and concentration</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/cm.html">Start</button>
             </div>
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🧮</span>
                 <h3>Math Challenge</h3>
                 <p>Solve quick math problems to boost your numeracy</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/mc.html">Start</button>
             </div>
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🔍</span>
                 <h3>Pattern Recognition</h3>
                 <p>Identify patterns to enhance your cognitive skills</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/pr.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">⚡</span>
                 <h3>Reaction Time</h3>
                 <p>Test and improve your reaction speed</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/rt.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🔊</span>
                 <h3>Simon Says</h3>
                 <p>Follow the sequence to boost your memory</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/ss.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🔢</span>
                 <h3>Sudoku</h3>
                 <p>Classic number puzzle to challenge your logic</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/sdk.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🧩</span>
                 <h3>Jigsaw Puzzle</h3>
                 <p>Piece together images to improve spatial reasoning</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/jp.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🔤</span>
                 <h3>Anagrams</h3>
                 <p>Form words from jumbled letters</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/ag.html">Start</button>
             </div>   
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">👁️</span>
                 <h3>Spot the Difference</h3>
                 <p>Find differences between two similar images</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/std.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">❓</span>
                 <h3>Trivia Quiz</h3>
                 <p>Test your knowledge on various topics</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/tq.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🌀</span>
                 <h3>Maze Runner</h3>
                 <p>Navigate through increasingly complex mazes</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/mr.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🔢</span>
                 <h3>Memory Sequence</h3>
                 <p>Remember and repeat growing number sequences</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/ms.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🧠</span>
                 <h3>Riddles</h3>
                 <p>Solve mind-bending riddles</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/rd.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">👅</span>
                 <h3>Tongue Twisters</h3>
                 <p>Practice pronunciation with fun phrases</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/tt.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🧘</span>
                 <h3>Guided Meditation</h3>
                 <p>Relax and focus with guided meditation</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/gm.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🌬️</span>
                 <h3>Breathing Exercise</h3>
                 <p>Learn and practice calming breathing techniques</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/be.html">Start</button>
             </div> 
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">💖</span>
                 <h3>Positive Affirmations</h3>
                 <p>Boost your mood with positive self-talk</p>
-                <button href="">Start</button>
+                <button class="game-button" data-game-url="vendor/pa.html">Start</button>
             </div> 
+        </div>
+        <div id="popup" class="popup">
+            <div class="popup-content">
+                <span class="close-btn">&times;</span>
+                <h2 id="game-title"></h2>
+                <iframe id="game-frame" src="" frameborder="0"></iframe>
+            </div>
         </div>
     </div>
     <div id="exercises" class="content">
@@ -557,13 +604,35 @@
 
         tabs.forEach(tab => {
             tab.addEventListener('click', () => {
-                // Remove active class from all tabs and contents
                 tabs.forEach(t => t.classList.remove('active'));
                 contents.forEach(c => c.classList.remove('active'));
 
-                // Add active class to the clicked tab and corresponding content
                 tab.classList.add('active');
                 document.getElementById(tab.dataset.target).classList.add('active');
+            });
+        });
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const gameButtons = document.querySelectorAll(".game-button");
+            const popup = document.getElementById("popup");
+            const gameFrame = document.getElementById("game-frame");
+            const closePopup = popup.querySelector(".close-btn");
+
+            // Add click event to each game button
+            gameButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    const gameUrl = button.getAttribute("data-game-url");
+                    const gameTitle = button.parentElement.querySelector("h3").textContent;
+                    gameFrame.src = gameUrl;
+                    document.getElementById("game-title").textContent = gameTitle; 
+                    popup.style.display = "flex";
+                });
+            });
+
+            // Close the popup
+            closePopup.addEventListener("click", () => {
+                popup.style.display = "none";
+                gameFrame.src = "";
             });
         });
 

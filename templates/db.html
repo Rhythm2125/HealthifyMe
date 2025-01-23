@@ -111,6 +111,10 @@
         color: #1e88e5;
     }
 
+    .side-nav ul li a:active {
+      transform: scale(0.98);
+    }
+
     .open-btn {
         font-size: 1.5rem;
         cursor: pointer;
@@ -624,29 +628,36 @@
       <div class="card">
         <img src="styles/imgs/cardiogram.png" alt="Steps Icon">
         <div>
-          <h2>Steps</h2>
-          <p>--</p>
+          <h2>Active</h2>
+          <p>0 min</p>
         </div>
       </div>
       <div class="card">
         <img src="styles/imgs/heart2.png" alt="Heart Rate Icon">
         <div>
           <h2>Heart Rate</h2>
-          <p>-- bpm</p>
+          <p>0 bpm</p>
+        </div>
+      </div>
+      <div class="card">
+        <img src="styles/imgs/run.png" alt="Weight Icon">
+        <div>
+          <h2>Steps Count</h2>
+          <p>0</p>
         </div>
       </div>
       <div class="card">
         <img src="styles/imgs/water-drop.png" alt="Blood Pressure Icon">
         <div>
-          <h2>Blood Pressure</h2>
-          <p>--</p>
+          <h2>SpO2</h2>
+          <p>0%</p>
         </div>
       </div>
       <div class="card">
-        <img src="styles/imgs/scale.png" alt="Weight Icon">
+        <img src="styles/imgs/fire.png" alt="Weight Icon">
         <div>
-          <h2>Weight</h2>
-          <p>-- lbs</p>
+          <h2>Calories Burned</h2>
+          <p>0</p>
         </div>
       </div>
     </div>
@@ -748,13 +759,13 @@
     new Chart(healthOverviewCtx, {
         type: 'line',
         data: {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
             datasets: [
-            { label: 'Steps', data: [3000, 4000, 3500, 5000, 4500, 6000], borderColor: '#007bff', fill: false },
-                { label: 'Calories', data: [2000, 2200, 2500, 2300, 2400, 2600], borderColor: '#ff9900', fill: false },
-                { label: 'Weight', data: [150, 148, 147, 146, 145, 144], borderColor: '#28a745', fill: false },
-                { label: 'Blood Pressure', data: [120, 122, 121, 123, 125, 124], borderColor: '#ff0000', fill: false },
-                { label: 'Sleep Hours', data: [7, 6.5, 8, 7.5, 7, 6.8], borderColor: '#6a5acd', fill: false }
+            { label: 'Steps', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], borderColor: '#007bff', fill: false },
+                { label: 'Calories', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], borderColor: '#ff9900', fill: false },
+                { label: 'Weight', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], borderColor: '#28a745', fill: false },
+                { label: 'Blood Pressure', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], borderColor: '#ff0000', fill: false },
+                { label: 'Sleep Hours', data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], borderColor: '#6a5acd', fill: false }
             ]
         },
         options: {
@@ -767,10 +778,10 @@
         data: {
             labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [
-            { label: 'Walking', data: [30, 20, 40, 50, 60, 70, 80], backgroundColor: '#007bff' },
-                { label: 'Running', data: [10, 15, 20, 15, 25, 30, 35], backgroundColor: '#28a745' },
-                { label: 'Cycling', data: [5, 10, 15, 20, 10, 25, 20], backgroundColor: '#ff9900' },
-                { label: 'Swimming', data: [0, 5, 10, 15, 10, 25, 30], backgroundColor: '#ff5733' }
+            { label: 'Walking', data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: '#007bff' },
+                { label: 'Running', data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: '#28a745' },
+                { label: 'Cycling', data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: '#ff9900' },
+                { label: 'Swimming', data: [0, 0, 0, 0, 0, 0, 0], backgroundColor: '#ff5733' }
             ]
         },
         options: {

@@ -193,6 +193,11 @@
             background-color: #191919;
         }
 
+        .time-slots button.selected {
+            background-color: #1e88e5;
+            color: #fff;
+        }
+
         table {
             width: 15%;
         }
@@ -209,10 +214,6 @@
             background-color: #1e88e5;
             color: #fff;
             border-radius: 100%;
-        }
-
-        table td.inactive {
-            color: #bbb;
         }
 
         .select-hospital select {
@@ -243,47 +244,6 @@
         .bookappointment:hover {
             transform: scale(1.05);
             background-color: #1e3a8a;
-        }
-
-        .main-container {
-            max-width: 1555px;
-            display: flex;
-            flex-direction: absolute;
-            gap: 20px;
-        }
-
-        .records-section, .add-record-section {
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-            width: 100%;
-        }
-
-        .records-section h3, .add-record-section h3 {
-            color: #1e3a8a;
-            margin-bottom: 20px;
-            font-size: 20px;
-        }
-
-        .add-record-section table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 20px;
-        }
-
-        .add-record-section table thead {
-            background-color: #e0ecfc;
-        }
-
-        .add-record-section table th, table td {
-            text-align: left;
-            padding: 10px;
-            color: #0056b3;
-        }
-
-        .add-record-section table th {
-            font-weight: bold;
         }
 
         footer {
@@ -397,61 +357,7 @@
                     <h2>Select a Date</h2>
                     <table>
                         <thead>
-                            <tr>
-                                <th>Su</th>
-                                <th>Mo</th>
-                                <th>Tu</th>
-                                <th>We</th>
-                                <th>Th</th>
-                                <th>Fr</th>
-                                <th>Sa</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td class="inactive">29</td>
-                                <td class="inactive">30</td>
-                                <td class="inactive">31</td>
-                                <td>1</td>
-                                <td>2</td>
-                                <td>3</td>
-                                <td>4</td>
-                            </tr>
-                            <tr>
-                                <td>5</td>
-                                <td>6</td>
-                                <td>7</td>
-                                <td>8</td>
-                                <td>9</td>
-                                <td>10</td>
-                                <td class="selected">11</td>
-                            </tr>
-                            <tr>
-                                <td>12</td>
-                                <td>13</td>
-                                <td>14</td>
-                                <td>15</td>
-                                <td>16</td>
-                                <td>17</td>
-                                <td>18</td>
-                            </tr>
-                            <tr>
-                                <td>19</td>
-                                <td>20</td>
-                                <td>21</td>
-                                <td>22</td>
-                                <td>23</td>
-                                <td>24</td>
-                                <td>25</td>
-                            </tr>
-                            <tr>
-                                <td>26</td>
-                                <td>27</td>
-                                <td>28</td>
-                                <td>29</td>
-                                <td>30</td>
-                                <td>31</td>
-                            </tr>
+                            <div id="calendar"></div>
                         </tbody>
                     </table>
                 </div>
@@ -485,25 +391,6 @@
         <div class="bookappointment"
         <button id="bookappointment">Book Appointment</button>
     </div>
-    <div class="main-container">
-        <div class="add-record-section" id="appointmentsTable">
-            <h3>Scheduled Appointments</h3>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Date</th>
-                        <th>Time</th>
-                        <th>Hospital</th>
-                        <th>Doctor's Name</th>
-                        <th>type</th>
-                        <th>Status</th>
-                    </tr>
-                </thead>
-                <tbody>
-
-                </tbody>
-            </table>
-        </div>
   </main>
   <footer>
     <div class="left">
@@ -544,5 +431,152 @@
     closeNav.addEventListener('click', () => {
         sideNav.classList.remove('open');
         mainContent.classList.remove('shifted');
+    });
+
+    let currentYear = new Date().getFullYear();
+    let currentMonth = new Date().getMonth();
+
+    // Generate Calendar
+    function generateCalendar(calendarId) {
+        const calendar = document.getElementById(calendarId);
+        calendar.innerHTML = "";
+
+        const firstDay = new Date(currentYear, currentMonth, 1).getDay();
+        const daysInMonth = new Date(currentYear, currentMonth + 1, 0).getDate();
+
+        const monthNames = [
+            "January", "February", "March", "April", "May", 
+            "June", "July", "August", "September", "October", 
+            "November", "December"
+        ];
+
+        const header = document.createElement("div");
+        header.style.textAlign = "left";
+        header.style.marginLeft = "80px"
+        header.style.marginBottom = "10px";
+        header.style.fontWeight = "bold";
+        header.innerHTML = `
+            <button id="prevMonth" style="background: none; border: none; cursor: pointer; margin-right: 10px; font-size: 1rem;">&#x3c;</button>
+            ${monthNames[currentMonth]} ${currentYear}
+            <button id="nextMonth" style="background: none; border: none; cursor: pointer; margin-left: 10px; font-size: 1rem;">&#x3e;</button>
+        `;
+        calendar.appendChild(header);
+
+        const table = document.createElement("table");
+        const daysOfWeek = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+        const headerRow = document.createElement("tr");
+
+        daysOfWeek.forEach(day => {
+            const th = document.createElement("th");
+            th.textContent = day;
+            headerRow.appendChild(th);
+        });
+
+        table.appendChild(headerRow);
+
+        let row = document.createElement("tr");
+        for (let i = 0; i < firstDay; i++) {
+            const emptyCell = document.createElement("td");
+            emptyCell.classList.add("inactive");
+            row.appendChild(emptyCell);
+        }
+
+        for (let date = 1; date <= daysInMonth; date++) {
+            if ((firstDay + date - 1) % 7 === 0) {
+                table.appendChild(row);
+                row = document.createElement("tr");
+            }
+
+            const cell = document.createElement("td");
+            cell.textContent = date;
+            cell.classList.add("active-date");
+            row.appendChild(cell);
+
+            cell.addEventListener("click", () => {
+                document.querySelectorAll(".active-date").forEach(c => c.classList.remove("selected"));
+                cell.classList.add("selected");
+                console.log(`Selected Date: ${date} ${monthNames[currentMonth]} ${currentYear}`);
+            });
+        }
+
+        // Append the last row
+        table.appendChild(row);
+        calendar.appendChild(table);
+
+        // Event Listeners for Month Navigation
+        document.getElementById("prevMonth").addEventListener("click", () => {
+            currentMonth -= 1;
+            if (currentMonth < 0) {
+                currentMonth = 11;
+                currentYear -= 1;
+            }
+            generateCalendar(calendarId);
+        });
+
+        document.getElementById("nextMonth").addEventListener("click", () => {
+            currentMonth += 1;
+            if (currentMonth > 11) {
+                currentMonth = 0;
+                currentYear += 1;
+            }
+            generateCalendar(calendarId);
+        });
+    }
+
+    generateCalendar("calendar");
+
+    // Calendar Date Selection
+    const dateCells = document.querySelectorAll('table td:not(.inactive)');
+    let selectedDate = null;
+    dateCells.forEach(cell => {
+        cell.addEventListener('click', () => {
+            // Deselect previously selected date
+            dateCells.forEach(c => c.classList.remove('selected'));
+            // Select the new date
+            cell.classList.add('selected');
+            selectedDate = cell.textContent;
+            console.log(`Selected Date: ${selectedDate}`);
+        });
+    });
+
+    // Time Slot Selection
+    const timeButtons = document.querySelectorAll('.time-slots button');
+    let selectedTime = null;
+    timeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            // Deselect previously selected time
+            timeButtons.forEach(btn => btn.classList.remove('selected'));
+            // Select the new time
+            button.classList.add('selected');
+            selectedTime = button.textContent;
+            console.log(`Selected Time: ${selectedTime}`);
+        });
+    });
+
+    // Hospital Selection
+    const hospitalSelect = document.querySelector('.select-hospital select');
+    let selectedHospital = null;
+    hospitalSelect.addEventListener('change', () => {
+        selectedHospital = hospitalSelect.value;
+        console.log(`Selected Hospital: ${selectedHospital}`);
+    });
+
+    // Book Appointment Button
+    const bookButton = document.getElementById('bookappointment');
+    bookButton.addEventListener('click', () => {
+        if (!selectedDate || !selectedTime || !selectedHospital || selectedHospital === "Select a hospital") {
+            alert('Please select a date, time, and hospital.');
+            return;
+        }
+
+        // Simulate booking process
+        alert(`Appointment booked successfully!\nDate: ${selectedDate}\nTime: ${selectedTime}\nHospital: ${selectedHospital}`);
+        
+        // You can send this data to a backend using fetch or AJAX here
+        console.log({
+            date: selectedDate,
+            time: selectedTime,
+            hospital: selectedHospital
+        });
     });
 </script>
