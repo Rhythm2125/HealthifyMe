@@ -400,12 +400,12 @@
     }
 
     .feature {
-      width: 100%; /* Full width for smaller screens */
+      width: 100%;
     }
     .close-button {
-      top: 10px;  /* Reduce the distance from the top */
-      right: 10px; /* Adjust distance from the right */
-      font-size: 1rem; /* Reduce font size */
+      top: 10px; 
+      right: 10px; 
+      font-size: 1rem;
     }
   }
 
@@ -424,21 +424,21 @@
     }
 
     .primary-btn, .secondary-btn {
-      width: 100%; /* Full width buttons on small screens */
+      width: 100%;
       text-align: center;
     }
 
     .modal-content {
-      max-width: 90%; /* Adjust modal width for smaller screens */
+      max-width: 90%;
     }
 
     .form input, .form button {
-      font-size: 1rem; /* Adjust input and button sizes */
+      font-size: 1rem;
     }
     .close-button {
       top: 5px;
       right: 5px;
-      font-size: 0.9rem; /* Further reduce font size for very small screens */
+      font-size: 0.9rem;
     }
   }
   </style>
@@ -459,7 +459,6 @@
         <li><a href="templates/hc.html"><img src="templates/styles/imgs/healthcare.png">Health Analysis</a></li>
         <li><a href="templates/rec.html"><img src="templates/styles/imgs/health-check.png">Records</a></li>
         <li><a href="templates/apb.html"><img src="templates/styles/imgs/calendar.png">Appointments</a></li>
-        <li><a href="#"><img src="templates/styles/imgs/smart-watch.png">My Watch</a></li>
         <li><a href="templates/profile.html"><img src="templates/styles/imgs/user.png">Profile</a></li>
         <li><a href="templates/st.html"><img src="templates/styles/imgs/settings.png">Settings</a></li>
     </ul>
@@ -582,7 +581,6 @@
     });
 
     window.onload = function() {
-      // Automatically show the modal on page load
       document.getElementById('authModal').style.display = 'flex';
     };
 
@@ -610,7 +608,6 @@
         const data = await response.json();
 
         if (response.ok) {
-          // Save user data in localStorage
           localStorage.setItem('user', JSON.stringify(data.user));
           alert('Login successful!');
           window.location.href = 'templates/profile.html'; // Redirect to profile
@@ -657,8 +654,6 @@
 
     function handleGoogleSignIn(response) {
       const credential = response.credential;
-
-      // Send the credential to the backend for verification and saving user data
       fetch('/api/google-signin', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
@@ -667,7 +662,6 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            // Save user data in localStorage
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Google Sign-In successful!');
             window.location.href = 'templates/profile.html'; // Redirect to profile
@@ -677,6 +671,7 @@
         })
         .catch((error) => console.error('Error:', error));
     }
+    
     function closeAuthModal() {
       const authModal = document.getElementById('authModal');
       authModal.style.display = 'none';
