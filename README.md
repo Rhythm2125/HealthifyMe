@@ -3,7 +3,7 @@
 
 **HealthConnect** is an innovative healthcare application designed to revolutionize healthcare management and disease prediction. The app offers an intuitive and interactive platform for users to monitor their health, predict diseases based on symptoms, and engage in fun, health-focused games.
 
-🌐 **Visit Our Website**: [Health Connect](https://healthconnect-nine.vercel.app/)
+🌐 **Visit Our WebApp**: [Health Connect](https://healthconnect-nine.vercel.app/)
 
 ## Features
 
@@ -22,11 +22,12 @@ Engaging mini-games are integrated into the app to promote physical activity and
 ### 5. **Enhanced Accessibility**
 HealthConnect supports a user-friendly interface and accessible design to ensure inclusivity and ease of use for individuals of all ages.
 
+
 **This is in Developement Process**
 
 ## 📧 Contact
 
 For any questions or feedback, feel free to reach out:
 **Email**: 
-rhythmjain.2005@gmail.com
+rhythmjain.2005@gmail.com,
 rishabhjain1175@gmail.com
