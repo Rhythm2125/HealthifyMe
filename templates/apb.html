@@ -107,6 +107,10 @@
             color: #1e88e5;
         }
 
+        .side-nav ul li a:active {
+            transform: scale(0.95);
+        }
+
         .open-btn {
             font-size: 1.5rem;
             cursor: pointer;
@@ -230,7 +234,7 @@
         }
 
         .bookappointment {
-            max-width: 200px; 
+            max-width: 180px; 
             height: 50px;
             padding: 15px; 
             background-color: #2564ec; 
@@ -588,10 +592,10 @@
     const bookButton = document.getElementById('bookappointment');
     bookButton.addEventListener('click', () => {
         if (!selectedDate || !selectedTime || !selectedHospital || selectedHospital === "Select a hospital") {
-            showNotification('Please select a date, time, and hospital.', 'error'); // Show error notification
+            showNotification('Please select all Details....', 'error');
             return;
         }
-        showNotification(`Appointment booked successfully!`, 'success'); // Show success notification
+        showNotification(`Appointment booked successfully!`, 'success');
         console.log({
             date: selectedDate,
             time: selectedTime,

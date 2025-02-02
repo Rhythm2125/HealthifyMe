@@ -610,7 +610,7 @@
         if (response.ok) {
           localStorage.setItem('user', JSON.stringify(data.user));
           alert('Login successful!');
-          window.location.href = 'templates/profile.html'; // Redirect to profile
+          window.location.href = 'templates/db.html';
         } else {
           alert(data.message || 'Login failed.');
         }
@@ -640,7 +640,7 @@
             const userData = { name, email };
             localStorage.setItem('user', JSON.stringify(userData));
             alert('Sign up successful!');
-            window.location.href = 'templates/profile.html'; // Redirect to profile
+            window.location.href = 'templates/db.html';
           } else {
             alert(data.message || 'Sign up failed.');
           }
@@ -664,7 +664,7 @@
           if (data.success) {
             localStorage.setItem('user', JSON.stringify(data.user));
             alert('Google Sign-In successful!');
-            window.location.href = 'templates/profile.html'; // Redirect to profile
+            window.location.href = 'templates/db.html';
           } else {
             alert(data.message || 'Google Sign-In failed.');
           }
