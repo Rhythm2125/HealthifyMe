@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <title>HealthConnect User-Profile</title>
+    <title>HealthifyMe User-Profile</title>
     <style>
         * {
             margin: 0;
@@ -381,7 +381,7 @@
         <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
         <div class="logo">
             <img src="styles/imgs/logo.png">
-            <span>HealthConnect</span>
+            <span>HealthifyMe</span>
         </div>
     </header>
     <div class="side-nav" id="sideNav">
@@ -513,7 +513,7 @@
   </main>
   <footer>
     <div class="left">
-      <p>© 2023 HealthConnect. All rights reserved.</p>
+      <p>© 2023 HealthifyMe. All rights reserved.</p>
     </div>
     <div class="right">
         <div class="language-select">
@@ -530,11 +530,10 @@
   </footer>
 <script>
     const sideNav = document.getElementById('sideNav');
-        const openNav = document.getElementById('openNav');
-        const closeNav = document.getElementById('closeNav');
-        const mainContent = document.getElementById('mainContent');
-
-        openNav.addEventListener('click', () => {
+    const openNav = document.getElementById('openNav');
+    const closeNav = document.getElementById('closeNav');
+    const mainContent = document.getElementById('mainContent');
+    openNav.addEventListener('click', () => {
         const isOpen = sideNav.classList.contains('open');
         if (isOpen) {
             sideNav.classList.remove('open');
@@ -551,28 +550,28 @@
     });
 
     document.getElementById('cancelButton').addEventListener('click', function () {
-        // Toggle back to View Mode without saving
         document.getElementById('viewMode').style.display = 'block';
         document.getElementById('editMode').style.display = 'none';
     });
-    // Placeholder for the graph (Health Streaks)
+
+    //Health Streaks Graph
     const ctx = document.getElementById('healthStreaksChart').getContext('2d');
     const healthStreaksChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'], // X-axis labels
+            labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             datasets: [{
-                label: 'streak', // Legend
-                data: [1, 2, 3, 4, 5, 6, 7, 8], // Y-axis data
-                borderColor: '#4f8bf9', // Line color
-                backgroundColor: 'rgba(79, 139, 249, 0.2)', // Fill under the line (optional)
-                pointBorderColor: '#4f8bf9', // Point border color
-                pointBackgroundColor: '#ffffff', // Point background color
-                pointRadius: 4, // Size of the points
-                pointHoverRadius: 6, // Size when hovered
-                borderWidth: 2, // Line width
-                tension: 0.4, // Smoothness of the line
-                fill: false, // No area fill under the line
+                label: 'streak',
+                data: [0, 0, 0, 0, 0, 0, 0, 0],
+                borderColor: '#4f8bf9',
+                backgroundColor: 'rgba(79, 139, 249, 0.2)',
+                pointBorderColor: '#4f8bf9', 
+                pointBackgroundColor: '#ffffff', 
+                pointRadius: 4,
+                pointHoverRadius: 6, 
+                borderWidth: 2, 
+                tension: 0.4, 
+                fill: false,
             }]
         },
         options: {
@@ -581,24 +580,24 @@
             plugins: {
                 legend: {
                     display: true,
-                    position: 'bottom', // Place legend below the chart
+                    position: 'bottom',
                     labels: {
                         font: {
                             size: 12
                         },
-                        color: '#333' // Legend text color
+                        color: '#333'
                     }
                 }
             },
             scales: {
                 x: {
                     grid: {
-                        display: true, // Show X-axis grid lines
+                        display: true, 
                         drawBorder: true,
-                        color: '#e3e3e3' // Grid color
+                        color: '#e3e3e3' 
                     },
                     ticks: {
-                        color: '#333', // X-axis label color
+                        color: '#333', 
                         font: {
                             size: 12
                         }
@@ -607,16 +606,16 @@
                 y: {
                     beginAtZero: false,
                     grid: {
-                        display: true, // Show Y-axis grid lines
+                        display: true, 
                         drawBorder: true,
-                        color: '#e3e3e3' // Grid color
+                        color: '#e3e3e3' 
                     },
                     ticks: {
-                        color: '#333', // Y-axis label color
+                        color: '#333',
                         font: {
                             size: 12
                         },
-                        stepSize: 2 // Step size between values
+                        stepSize: 2
                     }
                 }
             }
@@ -639,8 +638,6 @@
       document.getElementById('editButton').addEventListener('click', () => {
         document.getElementById('viewMode').style.display = 'none';
         document.getElementById('editMode').style.display = 'block';
-
-        // Fill inputs with current values
         document.getElementById('nameInput').value = document.getElementById('profileName').textContent.trim();
         document.getElementById('emailInput').value = document.getElementById('profileEmail').textContent.trim();
         document.getElementById('phoneInput').value = document.getElementById('profilephone').textContent.trim();
@@ -660,7 +657,6 @@
         document.getElementById('profileEmail').textContent = document.getElementById('emailInput').value;
         document.getElementById('profilephone').textContent = document.getElementById('phoneInput').value;
         document.getElementById('profiledob').textContent = document.getElementById('dobInput').value;
-
         // Switch back to view mode
         document.getElementById('editMode').style.display = 'none';
         document.getElementById('viewMode').style.display = 'block';

@@ -6,7 +6,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <title>HealthConnect HealthAnalysis</title>
+    <title>HealthifyMe HealthAnalysis</title>
     <style>
         * {
             margin: 0;
@@ -388,7 +388,8 @@
         .speedometer-container h1 {
             font-size: 25px;
             color: #1e3a8a;
-            margin-left: 30px;
+            margin-top: 10px;
+            margin-left: 20px;
         }
 
         .speedometer-container canvas {
@@ -408,6 +409,102 @@
             transform: translate(-50%, -50%);
         }
 
+        /*Sleep Metrics*/
+        .sleep-metrics-container {
+            width: 600px;
+            background: white;
+            border-radius: 40px;
+            padding: 20px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .sleep-metrics-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            justify-content: flex-start;
+        }
+
+        .sleep-metrics-header h2 {
+            color: #1e3a8a;
+            font-size: 25px;
+            font-weight: bold;
+            margin-right: 280px;
+        }
+
+        .sleep-metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            padding: 0 10px;
+        }
+
+        .sleep-metric {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            border: 2px solid #f5fbff;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .sleep-metric:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(25, 118, 210, 0.1);
+        }
+
+        .metric-icon {
+            width: 50px;
+            height: 50px;
+            margin: 0 auto 15px;
+        }
+
+        .metric-value {
+            font-size: 28px;
+            font-weight: bold;
+            color: #1976d2;
+            margin: 15px 0;
+        }
+
+        .metric-label {
+            color: #1976d2;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .quality-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: conic-gradient(#1976d2 0%, #E3F2FD 0);
+            margin: 15px auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            box-shadow: 0 0 10px rgba(25, 118, 210, 0.1);
+        }
+
+        .quality-circle::before {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            background: white;
+        }
+
+        .quality-value {
+            position: relative;
+            color: #1976d2;
+            font-weight: bold;
+            z-index: 1;
+        }
+
+        /*BMI Calculator*/
         .bmi-card {
             width: 700px;
             height: 400px;
@@ -462,8 +559,8 @@
         .results {
             display: none;
             flex: 1;
-            min-width: 350px;
             max-width: 400px;
+            height: fit-content;
             margin: 20px;
             margin-right: 100px;
             background: #ffffff;
@@ -587,15 +684,15 @@
             border-radius: 2px;
         }
 
-        .bmi-bar.underweight { background-color: #4169E1; width: 25%; }
-        .bmi-bar.normal { background-color: #32CD32; width: 50%; }
-        .bmi-bar.overweight { background-color: #FFA500; width: 52%; }
-        .bmi-bar.obese { background-color: #FF6347; width: 80%; }
+        .bmi-bar.underweight { background-color: #4169E1; width: 0%; }
+        .bmi-bar.normal { background-color: #32CD32; width: 0%; }
+        .bmi-bar.overweight { background-color: #FFA500; width: 0%; }
+        .bmi-bar.obese { background-color: #FF6347; width: 0%; }
 
         .x-axis {
             position: absolute;
             bottom: 0;
-            left: 100px;  /* Align with bars (after label width) */
+            left: 100px;
             right: 0;
             display: flex;
             justify-content: space-between;
@@ -633,6 +730,44 @@
             font-size: 14px;
             margin-top: 20px;
         }
+
+        footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 2rem;
+            background-color: #fff;
+            margin-top: 3rem;
+            box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+            font-size: 0.9rem;
+            color: #555;
+        }
+        footer .left {
+            display: flex;
+            align-items: center;
+        }
+        footer .left p {
+            margin: 0;
+        }
+        footer .right {
+            display: flex;
+            align-items: center;
+        }
+        footer a {
+            color: #1e88e5;
+            margin: 0 0.5rem;
+            text-decoration: none;
+        }
+        footer a:hover {
+            text-decoration: underline;
+        }
+        .language-select {
+            margin-left: 1rem;
+        }
+        .language-select select {
+            padding: 0.3rem;
+            font-size: 0.9rem;
+        }
     </style>
 </head>
 <body>
@@ -640,7 +775,7 @@
         <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
         <div class="logo">
             <img src="styles/imgs/logo.png">
-            <span>HealthConnect</span>
+            <span>HealthifyMe</span>
         </div>
     </header>
     <div class="side-nav" id="sideNav">
@@ -670,13 +805,54 @@
                     </canvas>
                     <p class="text">0%</p>
                 </div>
+                <div class="sleep-metrics-container">
+                    <div class="sleep-metrics-header">
+                        <div class="metric-icon">
+                            <img src="styles/imgs/moon.png" style="width: 100%; height: 100%;">
+                        </div>
+                        <h2>Sleep Metrics</h2>
+                    </div>
+                    <div class="sleep-metrics-grid">
+                        <div class="sleep-metric">
+                            <div class="metric-icon">
+                                <img src="styles/imgs/wall-clock.png" style="width: 50px; height: 50px;">
+                            </div>
+                            <div class="metric-value">0h</div>
+                            <div class="metric-label">Avg Sleep Time</div>
+                        </div>
+                        <div class="sleep-metric">
+                            <div class="metric-icon">
+                                <img src="styles/imgs/bedtime.png" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="metric-value">00:00 AM</div>
+                            <div class="metric-label">Avg BedTime</div>
+                        </div>
+                        <div class="sleep-metric">
+                            <div class="metric-icon">
+                                <img src="styles/imgs/sun.png" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="metric-value">00:00 AM</div>
+                            <div class="metric-label">Avg Wakeup Time</div>
+                        </div>
+                        <div class="sleep-metric sleep-quality">
+                            <div class="metric-icon">
+                                <img src="styles/imgs/speedometer.png" style="width: 100%; height: 100%;">
+                            </div>
+                            <div class="quality-circle">
+                                <span class="quality-value">0%</span>
+                            </div>
+                            <div class="metric-label">Sleep Score</div>
+                        </div>
+                    </div>
+                </div>
                 <div class="bmi-card">
                     <h1>TDEE, BMI, and Macronutrient Calculator</h1>
-                    <input type="number" id="age" placeholder="Age">
+                    <input type="number" id="age" placeholder="Age" min="1">
                     <select id="sex">
                         <option value="" disabled selected>Sex</option>
                         <option value="male">Male</option>
                         <option value="female">Female</option>
+                        <option value="others">Others</option>
                     </select>
                     <select id="activity-level">
                         <option value="" disabled selected>Activity Level</option>
@@ -754,8 +930,7 @@
                         <span>40</span>
                     </div>
                 </div>
-                <div class="footer-text">
-                    Macros based on a 40/30/30 (carbs/protein/fat) ratio. Adjust as needed for your specific goals.
+                <div class="footer-text">Macros based on a 40/30/30 (carbs/protein/fat) ratio. Adjust as needed for your specific goals.
                 </div>
             </div>
         </div>
@@ -866,7 +1041,7 @@
                 <h3>Tongue Twisters</h3>
                 <p>Practice pronunciation with fun phrases</p>
                 <button class="game-button" data-game-url="vendor/tt.html">Start</button>
-            </div> 
+            </div>
             <div class="mwh-card" id="mwh1">
                 <span style="font-size: 3rem; margin-top: 10px;">🧘</span>
                 <h3>Guided Meditation</h3>
@@ -949,6 +1124,23 @@
             </div>
         </div>
     </main>
+    <footer>
+        <div class="left">
+          <p>© 2025 HealthifyMe. All rights reserved.</p>
+        </div>
+        <div class="right">
+            <div class="language-select">
+                <label for="language">Language: </label>
+                <select id="language">
+                  <option value="en">English</option>
+                </select>
+            </div>
+            <a href="au.html">About Us</a>
+            <a href="#">Meet Our Team</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Terms of Service</a>
+        </div>
+    </footer>
     <script>
         const sideNav = document.getElementById('sideNav');
         const openNav = document.getElementById('openNav');
@@ -1018,7 +1210,7 @@
             }
         }
 
-        let totalRot = ((100 / 100) * 180 * Math.PI) / 180; // Insert Value of Health Score
+        let totalRot = ((70 / 100) * 180 * Math.PI) / 180; // Insert Value of Health Score
         let rotation = 0;
         let doAnim = true;
         let canvas = null;
@@ -1059,7 +1251,7 @@
 
         //main arc
         ctx.beginPath();
-        ctx.strokeStyle = rotation >= 0.75 * Math.PI ? "#FF9421" : "#35FFFF";
+        ctx.strokeStyle = rotation >= 0.75 * Math.PI ? "#00FF14" : "#35FFFF";
         ctx.lineWidth = "3";
         let radius = 174;
         ctx.arc(center.x, center.y, radius, Math.PI, Math.PI + rotation);
@@ -1068,7 +1260,7 @@
         //Red Arc
         if (rotation <= 0.75 * Math.PI) {
             ctx.beginPath();
-            ctx.strokeStyle = "#FF9421";
+            ctx.strokeStyle = "#00FF14";
             ctx.lineWidth = "3";
             ctx.arc(center.x, center.y, radius, 1.75 * Math.PI, 0);
             ctx.stroke();
@@ -1086,7 +1278,7 @@
             var degOfNeedle = rotation * (180 / Math.PI);
 
             if (rotation >= 0.75 * Math.PI) {
-            dotColor = degOfLine <= degOfNeedle ? "#FF9421" : "#f97272";
+            dotColor = degOfLine <= degOfNeedle ? "#00FF14" : "#f97272";
             } else {
             dotColor = degOfLine <= degOfNeedle ? dotColor : "#aad4d4";
             }
@@ -1131,7 +1323,7 @@
         ctx.lineTo(x + 10, y - 10);
         ctx.lineTo(x + 10, y + 10);
         ctx.closePath();
-        ctx.fillStyle = rotation >= 0.75 * Math.PI ? "#FF9421" : "#35FFFF";
+        ctx.fillStyle = rotation >= 0.75 * Math.PI ? "#00FF14" : "#35FFFF";
         ctx.fill();
         ctx.restore();
         if (rotation < totalRot) {

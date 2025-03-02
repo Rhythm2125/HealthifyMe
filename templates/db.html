@@ -6,7 +6,7 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <title>HealthConnect Dashboard</title>
+  <title>HealthifyMe Dashboard</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap');
 
@@ -504,106 +504,15 @@
 
     .chat-input textarea:valid~span {
       visibility: visible;
-    }
-    
-    @media (max-width: 1024px) {
-      .main-container {
-        margin-left: 0;
-      }
-
-      .dashboard {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-        gap: 15px;
-      }
-
-      .graphs {
-        grid-template-columns: 1fr;
-      }
-    }
-
-    @media (max-width: 768px) {
-      .card {
-        flex-direction: column;
-        align-items: flex-start;
-      }
-
-      .dashboard {
-        grid-template-columns: 1fr;
-      }
-      .chatbot {
-        width: 420px;
-        right: 35px;
-        bottom: 90px;
-        border-radius: 15px;
-      }
-
-      .chatbot-toggler {
-        bottom: 30px;
-        right: 35px;
-      }
-
-      .chatbox {
-        height: 450px;
-        padding: 30px 20px 100px;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .card {
-        flex-direction: column;
-        padding: 1rem;
-      }
-
-      .graphs {
-        grid-template-columns: 1fr;
-        margin: 0 1rem;
-      }
-      .chatbot {
-        width: 100%;
-        height: 100%;
-        right: 0;
-        bottom: 0;
-        border-radius: 0;
-      }
-
-      .chatbox {
-        height: 80%;
-        padding: 20px 10px 80px;
-      }
-
-      .chatbot header {
-        padding: 10px;
-        font-size: 1rem;
-      }
-
-      .chatbot-toggler {
-        width: 50px;
-        height: 50px;
-        bottom: 10px;
-        right: 10px;
-      }
-
-      .chatbot-toggler img {
-        height: 20px;
-        width: 20px;
-      }
-
-      .chat-input {
-        padding: 5px 10px;
-      }
-
-      .chat-input textarea {
-        font-size: 0.85rem;
-      }
-    }
+    } 
   </style>
 </head>
 <body>
   <header class="navbar">
     <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
     <div class="logo">
-        <img src="styles/imgs/logo.png">
-        <span>HealthConnect</span>
+        <a href="../index.html"><img src="styles/imgs/logo.png" alt="HealthifyMe Logo"></a>
+        <span>HealthifyMe</span>
     </div>
 </header>
 <div class="side-nav" id="sideNav">
@@ -691,7 +600,7 @@
 
   <footer>
     <div class="left">
-      <p>© 2023 HealthConnect. All rights reserved.</p>
+      <p>© 2025 HealthifyMe. All rights reserved.</p>
     </div>
     <div class="right">
         <div class="language-select">
@@ -715,13 +624,13 @@
     <header>
       <div style="display: flex; align-items: center; justify-content: center;">
         <img src="styles/imgs/joyful.png" alt="Chatbot Logo" style="width: 40px; height: 40px; margin-right: 10px;">
-      <h2 style="margin: 0;">HealthConnect Bot</h2>
+      <h2 style="margin: 0;">HealthifyMe Bot</h2>
       <span class="close-btn material-symbols-outlined">✖</span>
     </header>
     <ul class="chatbox">
       <li class="chat incoming">
         <span class="material-symbols-outlined">HC</span>
-        <p>Hello! <br>I'm your HealthConnect AI assistant. How can I help you today?<br><br>You can ask me about:<br><br>1. Your health records<br><br>2. Appointment scheduling<br><br>3. General health advice<br><br>4. HealthConnect features<br><br>What would you like to know?</p>
+        <p>Hello! <br>I'm your HealthifyMe AI assistant. How can I help you today?<br><br>You can ask me about:<br><br>1. Your health records<br><br>2. Appointment scheduling<br><br>3. General health advice<br><br>4. HealthifyMe features<br><br>What would you like to know?</p>
       </li>
     </ul>
     <div class="chat-input">
@@ -731,11 +640,10 @@
   </div>
   <script>
     const sideNav = document.getElementById('sideNav');
-        const openNav = document.getElementById('openNav');
-        const closeNav = document.getElementById('closeNav');
-        const mainContent = document.getElementById('mainContent');
-
-        openNav.addEventListener('click', () => {
+    const openNav = document.getElementById('openNav');
+    const closeNav = document.getElementById('closeNav');
+    const mainContent = document.getElementById('mainContent')
+    openNav.addEventListener('click', () => {
         const isOpen = sideNav.classList.contains('open');
         if (isOpen) {
             sideNav.classList.remove('open');
@@ -793,11 +701,11 @@
     const chatInput = document.querySelector(".chat-input textarea");
     const sendChatBtn = document.querySelector(".chat-input span");
 
-    let userMessage = null; // Variable to store user's message
+    let userMessage = null;
     const inputInitHeight = chatInput.scrollHeight;
 
     // API configuration
-    const API_KEY = "AIzaSyC9dMhwXC4Wi4OjN8_jrzeOVeI-kkjxQ-A"; // Your API key here
+    const API_KEY = "AIzaSyC9dMhwXC4Wi4OjN8_jrzeOVeI-kkjxQ-A";
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`;
 
     const createChatLi = (message, className) => {
@@ -831,7 +739,6 @@
 
         messageElement.textContent = data.candidates[0].content.parts[0].text.replace(/\*\*(.*?)\*\*/g, "$1");
       } catch (error) {
-
         messageElement.classList.add("error");
         messageElement.textContent = error.message;
       } finally {
@@ -845,7 +752,6 @@
 
       chatInput.value = "";
       chatInput.style.height = `${inputInitHeight}px`;
-
       chatbox.appendChild(createChatLi(userMessage, "outgoing"));
       chatbox.scrollTo(0, chatbox.scrollHeight);
 
@@ -868,14 +774,10 @@
         handleChat();
       }
     });
+    
     sendChatBtn.addEventListener("click", handleChat);
     closeBtn.addEventListener("click", () => document.body.classList.remove("show-chatbot"));
     chatbotToggler.addEventListener("click", () => document.body.classList.toggle("show-chatbot"));
-
-    document.addEventListener("DOMContentLoaded", () => {
-        // Load upcoming appointments on page load
-        loadUpcomingAppointments();
-    });
   </script>
 </body>
 </html>

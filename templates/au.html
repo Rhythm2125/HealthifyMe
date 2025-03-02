@@ -5,9 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-    <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
-    <title>HealthConnect AboutUs</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.11.4/gsap.min.js"></script>
+    <title>HealthifyMe AboutUs</title>
     <style>
         * {
             margin: 0;
@@ -29,6 +28,7 @@
             position: sticky;
             top: 0;
             z-index: 100;
+            opacity: 0;
         }
 
         .navbar .logo {
@@ -74,6 +74,11 @@
             margin: 10px;
             align-self: flex-end;
             cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .side-nav button:hover {
+            transform: scale(1.1);
         }
 
         .side-nav ul {
@@ -82,6 +87,7 @@
             display: flex;
             flex-direction: column;
             gap: 1.2rem;
+            opacity: 0;
         }
 
         .side-nav ul li {
@@ -96,21 +102,27 @@
             font-size: 1.1rem;
             display: flex;
             align-items: center;
+            transition: color 0.3s ease, transform 0.2s ease;
         }
 
         .side-nav ul li a img {
             height: 20px;
             width: 20px;
             margin-right: 5px;
+            transition: transform 0.2s ease;
         }
 
         .side-nav ul li a:hover {
-            transform: scale(1.05);
+            transform: translateX(5px);
             color: #1e88e5;
         }
 
+        .side-nav ul li a:hover img {
+            transform: translateX(2px);
+        }
+
         .side-nav ul li a:active {
-            transform: scale(0.95);
+            transform: scale(0.98);
         }
 
         .open-btn {
@@ -119,6 +131,11 @@
             color: #333;
             background: none;
             border: none;
+            transition: color 0.3s ease;
+        }
+
+        .open-btn:hover {
+            color: #1e88e5;
         }
 
         .open-btn:focus {
@@ -132,6 +149,11 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: #333;
+            transition: color 0.3s ease;
+        }
+
+        .close-btn:hover {
+            color: #1e88e5;
         }
 
         .main-container {
@@ -143,16 +165,19 @@
             text-align: center;
             padding: 70px;
             margin-bottom: 0px;
+            opacity: 0;
         }
 
         .apb-header h1 {
             font-size: 2.2rem;
             color: #2564ec;
+            margin-bottom: 15px;
         }
 
         .apb-header p {
             font-size: 1.3rem;
             color: #1e3a8a;
+            line-height: 1.6;
         }
 
         .cards {
@@ -170,16 +195,25 @@
             border-radius: 30px; 
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             font-size: 1rem; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
         }
 
         .card:hover {
-            transform: scale(1.03);
+            transform: translateY(-5px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
         }
 
         .card img {
             width: 55px;
             height: 55px;
             margin-bottom: 4%;
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover img {
+            transform: scale(1.1);
         }
 
         .card h3 {
@@ -190,12 +224,14 @@
 
         .card p {
             font-size: 1.1rem;
+            line-height: 1.5;
         }
 
         .team-section {
             text-align: center;
             border-radius: 30px;
             margin: 30px;
+            opacity: 0;
         }
 
         .team-section h2 {
@@ -216,6 +252,14 @@
             border-radius: 20px;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .team-member:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .team-member img {
@@ -224,6 +268,11 @@
             border-radius: 50%;
             margin-bottom: 15px;
             border: 3px solid #1e88e5;
+            transition: border-color 0.3s ease;
+        }
+
+        .team-member:hover img {
+            border-color: #2564ec;
         }
 
         .team-member h3 {
@@ -235,6 +284,7 @@
         .team-member p {
             font-size: 1rem;
             color: #555;
+            line-height: 1.5;
         }
 
         .social-links {
@@ -254,7 +304,7 @@
             display: flex;
             align-items: center;
             gap: 5px;
-            transition: background-color 0.3s ease, transform 0.2s ease;
+            transition: transform 0.2s ease, opacity 0.2s ease;
         }
 
         .social-links a i {
@@ -270,7 +320,7 @@
         }
 
         .social-links a:hover {
-            transform: scale(1.05);
+            transform: translateY(-2px);
             opacity: 0.9;
         }
                 
@@ -284,6 +334,7 @@
             box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
             font-size: 0.9rem;
             color: #555;
+            opacity: 0;
         }
 
         footer .left {
@@ -304,9 +355,11 @@
             color: #1e88e5;
             margin: 0 0.5rem;
             text-decoration: none;
+            transition: color 0.3s ease;
         }
 
         footer a:hover {
+            color: #2564ec;
             text-decoration: underline;
         }
 
@@ -317,6 +370,13 @@
         .language-select select {
             padding: 0.3rem;
             font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .language-select select:hover {
+            border-color: #1e88e5;
         }
     </style>
 </head>
@@ -325,12 +385,12 @@
         <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
         <div class="logo">
             <img src="styles/imgs/logo.png">
-            <span>HealthConnect</span>
+            <span>HealthifyMe</span>
         </div>
     </header>
     <div class="side-nav" id="sideNav">
         <button id="closeNav">&times;</button>
-        <ul>
+        <ul id="navList">
             <li><a href="db.html"><img src="styles/imgs/home.png">Dashboard</a></li>
             <li><a href="nh.html"><img src="styles/imgs/location.png">Nearby Hospitals & Medical Shops</a></li>
             <li><a href="hc.html"><img src="styles/imgs/healthcare.png">Health Analysis</a></li>
@@ -342,9 +402,9 @@
     </div>
     <main>
     <div class="apb-header">
-        <h1>About HealthConnect</h1>
+        <h1>About HealthifyMe</h1>
         <br>
-        <p>HealthConnect is a comprehensive healthcare management system designed to <br>
+        <p>HealthifyMe is a comprehensive healthcare management system designed to <br>
             streamline patient care and hospital management. Our mission is to empower <br>
             individuals to take control of their health journey while providing healthcare <br>
             providers with the tools they need to deliver exceptional care.</p>
@@ -372,22 +432,22 @@
         </div>
         <div class="card">
             <img src="styles/imgs/group.png">
-            <h3>Future Plans</h3>
+            <h3>Patient-Centered</h3>
             <p>Our platform is designed with patients at the center, ensuring that your healthcare journey is as smooth and stress-free as possible.</p>
         </div>
         <div class="card">
             <img src="styles/imgs/globe.png">
-            <h3>Future Plans</h3>
-            <p>HealthConnect aims to make quality healthcare management accessible to people around the world, breaking down geographical barriers.</p>
+            <h3>Global Reach</h3>
+            <p>HealthifyMe aims to make quality healthcare management accessible to people around the world, breaking down geographical barriers.</p>
         </div>
     </div>
     <div class="team-section">
         <h2>Meet Our Team</h2>
         <div class="team-members">
             <div class="team-member">
-                <img src=" " alt="Team Member 1">
+                <img src=" ">
                 <h3>Rhythm Jain</h3>
-                <p></p>
+                <p>Founder <br> SRMIST (SRM Institute of Science and Technology) <br> Web Developer(Frontend & Backend Both) | Android Developer</p>
                 <div class="social-links">
                     <a href="nkedin.com/in/rhythm-jain-7a41ba288" target="_blank" class="linkedin-btn">
                         <i class="fa fa-linkedin"></i>
@@ -398,11 +458,11 @@
                 </div>
             </div>
             <div class="team-member">
-                <img src=" " alt="Team Member 2">
+                <img src=" ">
                 <h3>Rishabh Jain</h3>
-                <p></p>
+                <p>Co-Founder <br> TMU (Teerthanker Mahaveer University) <br> Frontend Developer</p>
                 <div class="social-links">
-                    <a href=" " target="_blank" class="linkedin-btn">
+                    <a href="https://www.linkedin.com/in/rishabhjain" target="_blank" class="linkedin-btn">
                         <i class="fa fa-linkedin"></i>
                     </a>
                     <a href="https://github.com/Rishh2005" target="_blank" class="github-btn">
@@ -415,7 +475,7 @@
   </main>
   <footer>
     <div class="left">
-      <p>© 2023 HealthConnect. All rights reserved.</p>
+      <p>© 2023 HealthifyMe. All rights reserved.</p>
     </div>
     <div class="right">
         <div class="language-select">
@@ -425,31 +485,129 @@
             </select>
         </div>
         <a href="au.html">About Us</a>
-        <a href="#">Meet Our Team</a>
+        <a href="au.html">Meet Our Team</a>
         <a href="#">Privacy Policy</a>
         <a href="#">Terms of Service</a>
     </div>
   </footer>
   <script>
-    const sideNav = document.getElementById('sideNav');
-        const openNav = document.getElementById('openNav');
-        const closeNav = document.getElementById('closeNav');
-        const mainContent = document.getElementById('mainContent');
+    // GSAP animations
+    document.addEventListener("DOMContentLoaded", () => {
+        // Navbar animation
+        gsap.to(".navbar", {
+            opacity: 1,
+            duration: 0.8,
+            ease: "power1.out"
+        });
+        
+        // Header content animation
+        gsap.to(".apb-header", {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            delay: 0.3,
+            ease: "power2.out"
+        });
+        
+        // Card animations with staggered effect
+        gsap.to(".card", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.15,
+            delay: 0.5,
+            ease: "power2.out"
+        });
+        
+        // Team section animation
+        gsap.to(".team-section", {
+            opacity: 1,
+            duration: 0.8,
+            delay: 1,
+            ease: "power2.out"
+        });
+        
+        // Team member animations
+        gsap.to(".team-member", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            delay: 1.2,
+            ease: "power2.out"
+        });
+        
+        // Footer animation
+        gsap.to("footer", {
+            opacity: 1,
+            duration: 0.8,
+            delay: 1.5,
+            ease: "power2.out"
+        });
+    });
 
-        openNav.addEventListener('click', () => {
+    // Side navigation functionality
+    const sideNav = document.getElementById('sideNav');
+    const openNav = document.getElementById('openNav');
+    const closeNav = document.getElementById('closeNav');
+    const mainContent = document.getElementById('mainContent');
+    const navList = document.getElementById('navList');
+
+    openNav.addEventListener('click', () => {
         const isOpen = sideNav.classList.contains('open');
         if (isOpen) {
             sideNav.classList.remove('open');
-            mainContent.classList.remove('shifted');
+            gsap.to(navList, { opacity: 0, duration: 0.2 });
+            if (mainContent) mainContent.classList.remove('shifted');
         } else {
             sideNav.classList.add('open');
-            mainContent.classList.add('shifted');
+            gsap.to(navList, { 
+                opacity: 1, 
+                duration: 0.5,
+                delay: 0.2
+            });
+            if (mainContent) mainContent.classList.add('shifted');
         }
     });
 
     closeNav.addEventListener('click', () => {
-        sideNav.classList.remove('open');
-        mainContent.classList.remove('shifted');
+        gsap.to(navList, { 
+            opacity: 0, 
+            duration: 0.2,
+            onComplete: () => {
+                sideNav.classList.remove('open');
+                if (mainContent) mainContent.classList.remove('shifted');
+            }
+        });
+    });
+
+    // Intersection Observer for scroll animations
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                if (entry.target.classList.contains('card')) {
+                    gsap.to(entry.target, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                } else if (entry.target.classList.contains('team-member')) {
+                    gsap.to(entry.target, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.5,
+                        ease: "power2.out"
+                    });
+                }
+                observer.unobserve(entry.target);
+            }
+        });
+    }, { threshold: 0.15 });
+
+    // Observe elements for scroll animations
+    document.querySelectorAll('.card, .team-member').forEach(el => {
+        observer.observe(el);
     });
   </script>
 </body>

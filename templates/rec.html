@@ -6,7 +6,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-    <title>HealthConnect Dashboard</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <title>HealthifyMe Records-Section</title>
     <style>
         * {
             margin: 0;
@@ -196,6 +198,18 @@
             border: none;
             border-radius: 5px;
             cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-right: 5px;
+        }
+
+        .actions button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .actions button:active {
+            transform: translateY(0);
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .actions .view {
@@ -205,6 +219,19 @@
         .actions .download {
             background-color: #e0f2fe;
             color: rgb(0, 0, 0);
+        }
+
+        .actions .download:hover {
+            background-color: #bae6fd;
+        }
+
+        .actions .delete {
+            background-color: #e0f2fe;
+            color: rgb(0, 0, 0);
+        }
+
+        .actions .delete:hover {
+            background-color: #fdbaba;
         }
 
         .view-record-modal {
@@ -286,6 +313,41 @@
             background-color: #0056b3;
         }
 
+        /* Upload Container */
+        .upload-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Progress Bar Container */
+        .progress-bar-container {
+            flex: 1;
+            display: none;
+        }
+
+        /* Progress Bar Styling */
+        progress {
+            width: 100%;
+            height: 10px;
+            border-radius: 5px;
+        }
+
+        progress::-webkit-progress-bar {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        progress::-webkit-progress-value {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
+        progress::-moz-progress-bar {
+            background-color: #007bff;
+            border-radius: 5px;
+        }
+
         footer {
             display: flex;
             justify-content: space-between;
@@ -331,44 +393,18 @@
             font-size: 0.9rem;
         }
 
-        @media screen and (max-width: 768px) {
-            .main-container {
-                margin: 20px;
-            }
-
-            .records-section, .add-record-section {
-                padding: 15px;
-            }
-
-            table {
-                display: block;
-                overflow-x: auto;
-                white-space: nowrap;
-            }
-
-            table th, table td {
-                font-size: 0.9rem;
-            }
-        }
-
-        @media screen and (max-width: 480px) {
-            .records-section, .add-record-section {
-                padding: 10px;
-            }
-
-            table th, table td {
-                font-size: 0.8rem;
-                padding: 8px;
-            }
-
-            .view-record-modal {
-                width: 95%;
-            }
-            
-            .actions button {
-                font-size: 12px;
-                padding: 5px 10px;
-            }
+        /* Notification Popup */
+        .notification {
+            position: fixed;
+            top: 60px;
+            left: 20px;
+            background-color: #009a05b0;
+            color: white;
+            border-radius: 10px;
+            padding: 15px 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            display: none;
         }
     </style>
 </head>
@@ -377,7 +413,7 @@
         <button class="open-btn" id="openNav" id="closeNav"><i class="fa fa-bars"></i></button>
         <div class="logo">
             <img src="styles/imgs/logo.png">
-            <span>HealthConnect</span>
+            <span>HealthifyMe</span>
         </div>
     </header>
     <div class="side-nav" id="sideNav">
@@ -392,6 +428,9 @@
             <li><a href="st.html"><img src="styles/imgs/settings.png">Settings</a></li>
         </ul>
     </div>
+    <div id="notification" class="notification">
+        <p id="notificationMessage"></p>
+    </div>
     <main>
     <div class="apb-header">
         <h1>Health Records</h1>
@@ -405,6 +444,7 @@
                         <th>Date</th>
                         <th>Type</th>
                         <th>Doctor</th>
+                        <th>Note</th>
                         <th>Image</th>
                         <th>Actions</th>
                     </tr>
@@ -422,6 +462,7 @@
                 <p><strong>Date:</strong> <span id="viewDate">--</span></p>
                 <p><strong>Type:</strong> <span id="viewType">--</span></p>
                 <p><strong>Doctor:</strong> <span id="viewDoctor">--</span></p>
+                <p><strong>Note:</strong> <span id="viewNote">--</span></p>
                 <p><strong>Image:</strong></p>
                 <div id="viewImageContainer">
                     <img id="viewImage" src="" alt="Record Image" style="max-width: 100%; max-height: 300px; object-fit: cover;">
@@ -431,7 +472,7 @@
 
         <div class="add-record-section">
             <h3>Add New Record</h3>
-            <form>
+            <form id="recordForm">
                 <input type="text" placeholder="dd-mm-yyyy" pattern="\d{2}-\d{2}-\d{4}" title="Format: dd-mm-yyyy" required>
                 <select required>
                     <option value="" disabled selected>Select Record Type</option>
@@ -442,9 +483,14 @@
                     <option value="eye-exam">Eye Exam</option>
                 </select>
                 <input type="text" placeholder="Enter Doctor's Name" required>
-                <textarea placeholder="Add notes (optional)"></textarea>
-                <input type="file" id="fileInput" style="display: none;">
-                <button type="button" id="uploadButton"><i class="fa-regular fa-image"></i></button>
+                <textarea placeholder="Add notes (optional)" id="note"></textarea>
+                <input type="file" id="fileInput" accept="image/*" style="display: none;">
+                <div class="upload-container">
+                    <button type="button" id="uploadButton"><i class="fa-regular fa-images"></i></i></button>
+                    <div class="progress-bar-container">
+                        <progress id="uploadProgress" value="0" max="100"></progress>
+                    </div>
+                </div>
                 <button type="submit"><i class="fa-solid fa-plus"></i></button>
             </form>
         </div>
@@ -452,7 +498,7 @@
   </main>
   <footer>
     <div class="left">
-      <p>© 2023 HealthConnect. All rights reserved.</p>
+      <p>© 2023 HealthifyMe. All rights reserved.</p>
     </div>
     <div class="right">
         <div class="language-select">
@@ -467,13 +513,27 @@
         <a href="#">Terms of Service</a>
     </div>
   </footer>
-  <script>
+<script>
     const sideNav = document.getElementById('sideNav');
-        const openNav = document.getElementById('openNav');
-        const closeNav = document.getElementById('closeNav');
-        const mainContent = document.getElementById('mainContent');
+    const openNav = document.getElementById('openNav');
+    const closeNav = document.getElementById('closeNav');
+    const mainContent = document.getElementById('mainContent');
+    const notification = document.getElementById('notification');
+    const notificationMessage = document.getElementById('notificationMessage');
+    const uploadProgress = document.getElementById('uploadProgress');
+    const progressBarContainer = document.querySelector('.progress-bar-container');
 
-        openNav.addEventListener('click', () => {
+    // Function to show notification
+    function showNotification(message, duration = 3000) {
+        notificationMessage.textContent = message;
+        notification.style.display = 'block';
+        setTimeout(() => {
+            notification.style.display = 'none';
+        }, duration);
+    }
+
+    // Open/close side navigation
+    openNav.addEventListener('click', () => {
         const isOpen = sideNav.classList.contains('open');
         if (isOpen) {
             sideNav.classList.remove('open');
@@ -489,16 +549,7 @@
         mainContent.classList.remove('shifted');
     });
 
-    document.querySelectorAll('input[type="date"]').forEach((input) => {
-        input.addEventListener('blur', (event) => {
-            const value = event.target.value; 
-            if (value) {
-                const [year, month, day] = value.split('-');
-                event.target.value = `${day}-${month}-${year}`;
-            }
-        });
-    });
-
+    // Handle file upload button
     const uploadButton = document.getElementById('uploadButton');
     const fileInput = document.getElementById('fileInput');
 
@@ -506,80 +557,151 @@
         fileInput.click();
     });
 
-    document.querySelector('.add-record-section form').addEventListener('submit', (event) => {
-        event.preventDefault(); // Prevent the default form submission
-        
+    fileInput.addEventListener('change', () => {
+        progressBarContainer.style.display = 'block';
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+        loadRecords();
+    });
+
+    // Function to load records from localStorage
+    function loadRecords() {
+        const records = JSON.parse(localStorage.getItem('healthRecords')) || [];
+        const tableBody = document.querySelector('.records-section table tbody');
+        tableBody.innerHTML = '';
+
+        records.forEach((record, index) => {
+            const newRow = document.createElement('tr');
+            newRow.innerHTML = `
+                <td>${record.date}</td>
+                <td>${record.type}</td>
+                <td>${record.doctor}</td>
+                <td>${record.note}</td>
+                <td class="record-image">${record.image ? `<img src="${record.image}" alt="Record Image" style="max-width: 100px; max-height: 100px;">` : '--'}</td>
+                <td class="actions">
+                    <button class="view"><i class="fa-regular fa-eye" style="margin-right: 10px;"></i>View</button>
+                    <button class="download"><i class="fa-solid fa-download" style="margin-right: 10px;"></i>Download</button>
+                    <button class="delete"><i class="fa-solid fa-trash-can" style="margin-right: 10px;"></i>Delete</button>
+                </td>
+            `;
+            tableBody.appendChild(newRow);
+        });
+    }
+
+    // Handle form submission
+    document.getElementById('recordForm').addEventListener('submit', (event) => {
+        event.preventDefault();
+
         // Get form inputs
         const date = event.target.querySelector('input[type="text"]').value;
         const type = event.target.querySelector('select').value;
         const doctor = event.target.querySelector('input[placeholder="Enter Doctor\'s Name"]').value;
-        const fileInput = document.getElementById('fileInput');
-        const fileName = fileInput.files[0] ? fileInput.files[0].name : '--';
+        const note = document.getElementById('note').value;
+        const file = fileInput.files[0];
 
-        // Validate inputs (basic validation)
         if (!date || !type || !doctor) {
-            alert('Please fill out all required fields!');
+            showNotification('Please fill out all required fields!', 3000);
             return;
         }
 
-        // Create new row for the table
-        const tableBody = document.querySelector('.records-section table tbody');
-        const newRow = document.createElement('tr');
+        // Show the progress bar
+        progressBarContainer.style.display = 'block';
+        uploadProgress.value = 0;
 
-        newRow.innerHTML = `
-            <td>${date}</td>
-            <td>${type}</td>
-            <td>${doctor}</td>
-            <td>${fileName}</td>
-            <td class="actions">
-                <button class="view"><i class="fa-regular fa-eye" style="margin-right: 10px;"></i>View</button>
-                <button class="download"><i class="fa-solid fa-download" style="margin-right: 10px;"></i>Download</button>
-            </td>
-        `;
+        let imageDataUrl = null;
+        if (file) {
+            const reader = new FileReader();
+            reader.onprogress = (event) => {
+                if (event.lengthComputable) {
+                    const percentLoaded = Math.round((event.loaded / event.total) * 100);
+                    uploadProgress.value = percentLoaded;
+                    console.log(`Upload Progress: ${percentLoaded}%`);
+                }
+            };
 
-        // Add the new row to the table body
-        tableBody.appendChild(newRow);
+            reader.onload = function (e) {
+                imageDataUrl = e.target.result;
+                uploadProgress.value = 100;
+                saveRecord(date, type, doctor, note, imageDataUrl);
+            };
 
-        // Clear form inputs
-        event.target.reset();
-        fileInput.value = ''; // Clear file input
-    });
-
-    document.querySelector('.records-section').addEventListener('click', (event) => {
-        if (event.target.closest('.download')) {
-            const table = document.querySelector('.records-section table');
-            const rows = Array.from(table.querySelectorAll('tbody tr'));
-
-            if (!rows.length) {
-                alert('No records to download.');
-                return;
-            }
-
-            // Prepare data for Excel
-            const data = [['Date', 'Type', 'Doctor', 'Image']];
-            rows.forEach((row) => {
-                const cols = Array.from(row.querySelectorAll('td'));
-                const rowData = cols.map((col, index) => {
-                    if (index === 3) {
-                        // Handle image column
-                        const img = col.querySelector('img');
-                        return img ? img.src : '--';
-                    }
-                    return col.textContent.trim();
-                });
-                data.push(rowData);
-            });
-
-            // Convert to Excel
-            const ws = XLSX.utils.aoa_to_sheet(data);
-            const wb = XLSX.utils.book_new();
-            XLSX.utils.book_append_sheet(wb, ws, 'Records');
-
-            // Download Excel file
-            XLSX.writeFile(wb, 'Health_Records.xlsx');
+            reader.onerror = function () {
+                showNotification('Error uploading image. Please try again.', 3000);
+                progressBarContainer.style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+        } else {
+            saveRecord(date, type, doctor, note, null);
         }
     });
 
+    // Function to save a record to localStorage
+    function saveRecord(date, type, doctor, note, imageDataUrl) {
+        const records = JSON.parse(localStorage.getItem('healthRecords')) || [];
+        const newRecord = {
+            date,
+            type,
+            doctor,
+            note,
+            image: imageDataUrl,
+        };
+        records.push(newRecord);
+        localStorage.setItem('healthRecords', JSON.stringify(records));
+        loadRecords();
+        showNotification('Record saved successfully!', 3000);
+        document.getElementById('recordForm').reset();
+        fileInput.value = '';
+    }
+
+    // Handle delete button click
+    document.querySelector('.records-section').addEventListener('click', (event) => {
+        const deleteButton = event.target.closest('.delete');
+        if (deleteButton) {
+            const row = deleteButton.closest('tr');
+            const date = row.children[0].textContent;
+            const type = row.children[1].textContent;
+            const doctor = row.children[2].textContent;
+            const confirmDelete = confirm(`Are you sure you want to delete the record for ${date}, ${type}, ${doctor}?`);
+            if (confirmDelete) {
+                deleteRecord(date, type, doctor);
+                showNotification('Record deleted successfully!', 3000);
+            }
+        }
+    });
+
+    // Function to delete a record from localStorage
+    function deleteRecord(date, type, doctor) {
+        let records = JSON.parse(localStorage.getItem('healthRecords')) || [];
+        records = records.filter(record => 
+            record.date !== date || record.type !== type || record.doctor !== doctor
+        );
+        localStorage.setItem('healthRecords', JSON.stringify(records));
+        loadRecords();
+    }
+
+    // Handle download button click
+    document.querySelector('.records-section').addEventListener('click', (event) => {
+        const downloadButton = event.target.closest('.download');
+        if (downloadButton) {
+            const row = downloadButton.closest('tr');
+            downloadAsImage(row);
+        }
+    });
+
+    // Function to download record as an image
+    function downloadAsImage(row) {
+        html2canvas(row).then((canvas) => {
+            const imgData = canvas.toDataURL('image/png');
+            const link = document.createElement('a');
+            link.href = imgData;
+            link.download = 'record.png';
+            link.click();
+            showNotification('Image downloaded successfully!', 3000);
+        });
+    }
+
+    // Handle view button click
     document.querySelector('.records-section').addEventListener('click', (event) => {
         const viewButton = event.target.closest('.view');
         if (viewButton) {
@@ -587,12 +709,14 @@
             const date = row.children[0].textContent;
             const type = row.children[1].textContent;
             const doctor = row.children[2].textContent;
+            const note = row.children[3].textContent;
             const imageElement = row.querySelector('.record-image img');
 
             // Populate modal with record details
             document.getElementById('viewDate').textContent = date;
             document.getElementById('viewType').textContent = type;
             document.getElementById('viewDoctor').textContent = doctor;
+            document.getElementById('viewNote').textContent = note;
 
             if (imageElement) {
                 document.getElementById('viewImage').src = imageElement.src;
