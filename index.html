@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="Icon" href="templates/styles/imgs/logo.png">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <script src="https://kit.fontawesome.com/1c03889634.js" crossorigin="anonymous"></script>
   <script src="https://accounts.google.com/gsi/client" async defer></script>
@@ -555,7 +556,6 @@
         const data = await response.json();
 
         if (response.ok) {
-          localStorage.setItem('user', JSON.stringify(data.user));
           alert('Login successful!');
           window.location.href = 'templates/db.html';
         } else {
@@ -571,21 +571,19 @@
       const email = document.getElementById('signupEmail').value;
       const password = document.getElementById('signupPassword').value;
       const confirmPassword = document.getElementById('signupConfirmPassword').value;
+      const age = document.getElementById('age').value;
 
-      if (name && email && password && confirmPassword) {
+      if (name && email && password && confirmPassword && age) {
         if (password === confirmPassword) {
           const response = await fetch('/api/signup', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ name, email, password }),
+            body: JSON.stringify({ name, email, password, age }),
           });
 
           const data = await response.json();
 
           if (response.ok) {
-            // Save user data in localStorage
-            const userData = { name, email };
-            localStorage.setItem('user', JSON.stringify(userData));
             alert('Sign up successful!');
             window.location.href = 'templates/db.html';
           } else {
@@ -609,7 +607,6 @@
         .then((res) => res.json())
         .then((data) => {
           if (data.success) {
-            localStorage.setItem('user', JSON.stringify(data.user));
             alert('Google Sign-In successful!');
             window.location.href = 'templates/db.html';
           } else {
