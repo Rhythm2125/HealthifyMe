@@ -83,37 +83,90 @@
         }
 
         .hospital-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 1.5rem;
             padding: 1rem;
+        }
+
+        .hospital-card {
             background-color: #fff;
             border-radius: 10px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        .hospital-list ul {
-            list-style: none;
-            padding: 0;
+        .hospital-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
 
-        .hospital-list li {
+        .hospital-image {
+            height: 180px;
+            width: 100%;
+            background-color: #e0e0e0;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+        }
+
+        .hospital-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .hospital-details {
+            padding: 1.2rem;
+        }
+
+        .hospital-name {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #1e3a8a;
+            margin-bottom: 0.5rem;
+        }
+
+        .hospital-address {
+            color: #666;
+            margin-bottom: 0.8rem;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .hospital-rating {
+            display: flex;
+            align-items: center;
             margin-bottom: 1rem;
-            border: 1px solid #ddd;
-            padding: 1rem;
-            border-radius: 5px;
-            background-color: #f9f9f9;
         }
 
-        .hospital-list li:hover {
-            background-color: #e7f0ff;
-            border-color: #2564ec;
+        .stars {
+            color: #FFD700;
+            margin-right: 0.5rem;
         }
 
-        .hospital-list a {
+        .rating-value {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .view-button {
+            display: inline-block;
+            padding: 0.6rem 1rem;
+            background-color: #2564ec;
+            color: white;
             text-decoration: none;
-            color: inherit;
+            border-radius: 5px;
+            font-weight: 500;
+            transition: background-color 0.3s;
+            text-align: center;
+            width: 100%;
+            box-sizing: border-box;
         }
 
-        .hospital-list a:hover {
-            color: #1e88e5;
+        .view-button:hover {
+            background-color: #1e3a8a;
         }
 
         /*loading*/
@@ -121,7 +174,10 @@
           width: 50px;
           aspect-ratio: 1;
           display: grid;
-          margin-left: 50%;
+          margin: 0 auto;
+          grid-template: 1fr / 1fr;
+          position: relative;
+          right: 45%;
         }
 
         .loader::before,
@@ -147,6 +203,24 @@
 
         @keyframes l12 { 
           100%{transform: rotate(.5turn)}
+        }
+
+        .no-results {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 2rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        @media (max-width: 768px) {
+            .hospital-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .map-container {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -192,8 +266,8 @@
         <!-- Hospital List Container -->
         <div class="hospital-list-container">
             <h2 class="hospital-list-header">Nearby Hospitals & Medical Shops List</h2>
-            <div class="hospital-list">
-                <ul id="hospitalList"></ul>
+            <div class="hospital-list" id="hospitalList">
+                <div class='loader'></div>
             </div>
         </div>
     </div>
@@ -217,11 +291,11 @@
   </footer>
   <script>
     const sideNav = document.getElementById('sideNav');
-        const openNav = document.getElementById('openNav');
-        const closeNav = document.getElementById('closeNav');
-        const mainContent = document.getElementById('mainContent');
+    const openNav = document.getElementById('openNav');
+    const closeNav = document.getElementById('closeNav');
+    const mainContent = document.getElementById('mainContent');
 
-        openNav.addEventListener('click', () => {
+    openNav.addEventListener('click', () => {
         const isOpen = sideNav.classList.contains('open');
         if (isOpen) {
             sideNav.classList.remove('open');
@@ -257,19 +331,25 @@
             map.setCenter(userLocation);
             fetchNearbyHospitals(userLocation);
           },
+          () => {
+            // Default to Delhi if geolocation fails
+            userLocation = { lat: 28.6139, lng: 77.2090 };
+            map.setCenter(userLocation);
+            fetchNearbyHospitals(userLocation);
+          }
         );
       } else {
         alert("Geolocation not supported by your browser.");
-        fetchNearbyHospitals(defaultLocation);
+        userLocation = { lat: 28.6139, lng: 77.2090 };
+        map.setCenter(userLocation);
+        fetchNearbyHospitals(userLocation);
       }
     }
 
     function fetchNearbyHospitals(location) {
       const apiKey = "c503613083b94b5b94898b44a0e09694";
-      const apiUrl = `https://api.geoapify.com/v2/places?categories=healthcare.hospital&filter=circle:77.219688,28.632759,5000&bias=proximity:77.219688,28.632759&limit=20&apiKey=c503613083b94b5b94898b44a0e09694`;
-
-      document.getElementById("hospitalList").innerHTML =
-        "<p class='loader'></p>";
+      const radius = 5000; // 5km radius
+      const apiUrl = `https://api.geoapify.com/v2/places?categories=healthcare.hospital&filter=circle:${location.lng},${location.lat},${radius}&bias=proximity:${location.lng},${location.lat}&limit=20&apiKey=${apiKey}`;
 
       fetch(apiUrl)
         .then((response) => response.json())
@@ -281,7 +361,7 @@
         .catch((error) => {
           console.error("Error fetching hospital data:", error);
           document.getElementById("hospitalList").innerHTML =
-            "<p class='loading-message'>Failed to load hospitals.</p>";
+            "<p class='no-results'>Failed to load hospitals. Please try again later.</p>";
         });
     }
 
@@ -289,25 +369,42 @@
       const hospitalList = document.getElementById("hospitalList");
       if (!hospitals || hospitals.length === 0) {
         hospitalList.innerHTML =
-          "<p class='loading-message'>No hospitals found nearby.</p>";
+          "<p class='no-results'>No hospitals found nearby.</p>";
         return;
       }
 
       hospitalList.innerHTML = hospitals
         .map((hospital) => {
           const name = hospital.properties.name || "Unnamed Hospital";
-          const address = hospital.properties.address_line2 || "Not Available";
+          const address = hospital.properties.formatted || hospital.properties.address_line2 || "Address not available";
           const lat = hospital.geometry.coordinates[1];
           const lng = hospital.geometry.coordinates[0];
           const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+          
+          // Generate a random rating between 3.0 and 5.0 for demo purposes
+          const rating = (Math.random() * 2 + 3).toFixed(1);
+          const stars = Math.round(rating);
+          
+          // Use placeholder image (in a real app, you might use hospital images from an API)
+          const imageUrl = `https://source.unsplash.com/random/400x300/?hospital,clinic,medical&sig=${Math.floor(Math.random() * 100)}`;
 
           return `
-            <li class="hospital-item">
-              <a href="${googleMapsUrl}">
-                <h3>${name}</h3>
-                <p>Address: ${address}</p>
-              </a>
-            </li>
+            <div class="hospital-card">
+              <div class="hospital-image">
+                <img src="${imageUrl}" alt="${name}">
+              </div>
+              <div class="hospital-details">
+                <h3 class="hospital-name">${name}</h3>
+                <p class="hospital-address">${address}</p>
+                <div class="hospital-rating">
+                  <div class="stars">
+                    ${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}
+                  </div>
+                  <span class="rating-value">${rating}</span>
+                </div>
+                <a href="${googleMapsUrl}" target="_blank" class="view-button">View in Google Maps</a>
+              </div>
+            </div>
           `;
         })
         .join("");
@@ -326,12 +423,9 @@
 
         marker.addListener("click", () => {
           map.setCenter(marker.getPosition());
+          map.setZoom(15);
         });
       });
-    }
-
-    function viewDetails(name) {
-      alert(`Viewing details for hospital: ${name}`);
     }
 
     function filterHospitals() {
@@ -339,28 +433,54 @@
         .getElementById("searchBar")
         .value.toLowerCase();
 
-      const filteredHospitals = hospitals.filter((hospital) =>
-        (hospital.properties.name || "")
-          .toLowerCase()
-          .includes(searchQuery)
-      );
-
       const hospitalList = document.getElementById("hospitalList");
-      if (!filteredHospitals || filteredHospitals.length === 0) {
-        hospitalList.innerHTML =
-          "<p class='loading-message'>No hospitals found matching your search.</p>";
+      
+      if (!searchQuery) {
+        displayHospitalList();
+        return;
+      }
+
+      const filteredHospitals = hospitals.filter(hospital => {
+        const name = (hospital.properties.name || "").toLowerCase();
+        const address = (hospital.properties.formatted || hospital.properties.address_line2 || "").toLowerCase();
+        return name.includes(searchQuery) || address.includes(searchQuery);
+      });
+
+      if (filteredHospitals.length === 0) {
+        hospitalList.innerHTML = "<p class='no-results'>No hospitals found matching your search.</p>";
         return;
       }
 
       hospitalList.innerHTML = filteredHospitals
-        .map(
-          (hospital) => `
-        <li>
-          <h3>${hospital.properties.name || "Unnamed Hospital"}</h3>
-          <p>Address: ${hospital.properties.address_line2 || "Not Available"}</p>
-        </li>
-      `
-        )
+        .map((hospital) => {
+          const name = hospital.properties.name || "Unnamed Hospital";
+          const address = hospital.properties.formatted || hospital.properties.address_line2 || "Address not available";
+          const lat = hospital.geometry.coordinates[1];
+          const lng = hospital.geometry.coordinates[0];
+          const googleMapsUrl = `https://www.google.com/maps?q=${lat},${lng}`;
+          const rating = (Math.random() * 2 + 3).toFixed(1);
+          const stars = Math.round(rating);
+          const imageUrl = `https://source.unsplash.com/random/400x300/?hospital,clinic,medical&sig=${Math.floor(Math.random() * 100)}`;
+
+          return `
+            <div class="hospital-card">
+              <div class="hospital-image">
+                <img src="${imageUrl}" alt="${name}">
+              </div>
+              <div class="hospital-details">
+                <h3 class="hospital-name">${name}</h3>
+                <p class="hospital-address">${address}</p>
+                <div class="hospital-rating">
+                  <div class="stars">
+                    ${'★'.repeat(stars)}${'☆'.repeat(5 - stars)}
+                  </div>
+                  <span class="rating-value">${rating}</span>
+                </div>
+                <a href="${googleMapsUrl}" target="_blank" class="view-button">View in Google Maps</a>
+              </div>
+            </div>
+          `;
+        })
         .join("");
     }
   </script>
